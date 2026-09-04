@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chrono9000.github.io/tim-knowledge-graph/schemas/graph.schema.json",
+  "title": "Tim Knowledge Graph",
+  "description": "Canonical exchange format for the curated knowledge graph and future agent-produced updates.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "title", "generatedAt", "categories", "sources", "nodes", "edges"],
+  "properties": {
+    "$schema": { "type": "string", "description": "Relative or absolute location of this JSON Schema." },
+    "schemaVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "title": { "type": "string", "minLength": 1 },
+    "generatedAt": { "$ref": "#/$defs/timestamp" },
+    "categories": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/category" }
+    },
+    "sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "nodes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/node" }
+    },
+    "edges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/edge" }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Stable lowercase kebab-case identifier."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 timestamp including a UTC offset."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence in the record or source, from 0 (unknown) to 1 (fully trusted)."
+    },
+    "authorityLevel": {
+      "type": "string",
+      "enum": ["owner", "primary", "secondary", "tertiary", "unknown"],
+      "description": "Authority of the evidence: owner-curated, primary evidence, secondary analysis, tertiary summary, or unknown."
+    },
+    "timestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["createdAt", "updatedAt"],
+      "properties": {
+        "createdAt": { "$ref": "#/$defs/timestamp" },
+        "updatedAt": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["sourceIds", "timestamps", "confidence", "authorityLevel"],
+      "properties": {
+        "sourceIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/identifier" },
+          "description": "References to entries in the top-level sources collection."
+        },
+        "timestamps": { "$ref": "#/$defs/timestamps" },
+        "confidence": { "$ref": "#/$defs/confidence" },
+        "authorityLevel": { "$ref": "#/$defs/authorityLevel" }
+      }
+    },
+    "category": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "color"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "label": { "type": "string", "minLength": 1 },
+        "color": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "type", "location", "retrievedAt", "confidence", "authorityLevel"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "title": { "type": "string", "minLength": 1 },
+        "type": {
+          "type": "string",
+          "enum": ["curated", "document", "webpage", "dataset", "interview", "observation", "generated", "other"]
+        },
+        "location": { "type": "string", "minLength": 1, "description": "URL, repository locator, or other stable source address." },
+        "retrievedAt": { "$ref": "#/$defs/timestamp" },
+        "confidence": { "$ref": "#/$defs/confidence" },
+        "authorityLevel": { "$ref": "#/$defs/authorityLevel" }
+      }
+    },
+    "node": {
+      "allOf": [
+        { "$ref": "#/$defs/provenance" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "label", "category", "description", "sourceIds", "timestamps", "confidence", "authorityLevel"],
+          "properties": {
+            "id": { "$ref": "#/$defs/identifier" },
+            "label": { "type": "string", "minLength": 1 },
+            "category": { "$ref": "#/$defs/identifier" },
+            "description": { "type": "string", "minLength": 1 },
+            "sourceIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/identifier" } },
+            "timestamps": { "$ref": "#/$defs/timestamps" },
+            "confidence": { "$ref": "#/$defs/confidence" },
+            "authorityLevel": { "$ref": "#/$defs/authorityLevel" }
+          }
+        }
+      ]
+    },
+    "edge": {
+      "allOf": [
+        { "$ref": "#/$defs/provenance" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "source", "target", "relationship", "sourceIds", "timestamps", "confidence", "authorityLevel"],
+          "properties": {
+            "id": { "$ref": "#/$defs/identifier" },
+            "source": { "$ref": "#/$defs/identifier" },
+            "target": { "$ref": "#/$defs/identifier" },
+            "relationship": { "$ref": "#/$defs/identifier" },
+            "directed": { "type": "boolean", "default": false },
+            "sourceIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/identifier" } },
+            "timestamps": { "$ref": "#/$defs/timestamps" },
+            "confidence": { "$ref": "#/$defs/confidence" },
+            "authorityLevel": { "$ref": "#/$defs/authorityLevel" }
+          }
+        }
+      ]
+    }
+  }
+}

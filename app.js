@@ -1,6 +1,20 @@
-(function () {
+(async function () {
   "use strict";
-  const data = window.KNOWLEDGE_GRAPH;
+  let data;
+  try {
+    const dataUrl = new URL("./data/graph.json", document.baseURI);
+    const response = await fetch(dataUrl, { headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error(`Graph data request failed with ${response.status}`);
+    data = await response.json();
+  } catch (error) {
+    console.error("Unable to load knowledge graph data.", error);
+    const emptyState = document.querySelector("#empty-state");
+    emptyState.hidden = false;
+    emptyState.querySelector("strong").textContent = "Graph unavailable";
+    emptyState.querySelector("span").textContent = "The graph data could not be loaded. Please refresh the page.";
+    emptyState.querySelector("button").hidden = true;
+    return;
+  }
   const svg = document.querySelector("#graph-svg");
   const graphPanel = document.querySelector(".graph-panel");
   const viewport = document.querySelector("#viewport");
@@ -31,7 +45,7 @@
     nodeById.set(node.id, full);
     return full;
   });
-  const links = data.links.map(link => ({ ...link, a: nodeById.get(link.source), b: nodeById.get(link.target) }));
+  const links = data.edges.map(link => ({ ...link, a: nodeById.get(link.source), b: nodeById.get(link.target) }));
 
   function makeSvg(tag, attrs = {}) {
     const element = document.createElementNS(NS, tag);
