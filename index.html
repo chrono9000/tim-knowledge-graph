@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090b12">
+  <meta name="description" content="An interactive map of ideas, projects, and interests across nine connected domains.">
+  <title>Tim's Knowledge Graph</title>
+  <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+  <a class="skip-link" href="#graph">Skip to graph</a>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="identity">
+        <div class="mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div>
+          <p class="eyebrow">Personal knowledge atlas</p>
+          <h1>Tim's Knowledge Graph</h1>
+        </div>
+      </div>
+      <div class="stats" aria-live="polite">
+        <strong id="visible-count">0</strong>
+        <span>visible ideas</span>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <aside class="controls" aria-label="Graph controls">
+        <div class="control-section search-section">
+          <label for="search">Find an idea</label>
+          <div class="search-wrap">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.6-4.6m2.1-5.4a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
+            <input id="search" type="search" placeholder="Search topics…" autocomplete="off">
+            <kbd>/</kbd>
+          </div>
+        </div>
+
+        <fieldset class="control-section">
+          <legend>Explore categories</legend>
+          <div id="category-filters" class="filter-list"></div>
+          <button id="show-all" class="text-button" type="button">Show all categories</button>
+        </fieldset>
+
+        <div class="control-section guide">
+          <p class="section-label">How to explore</p>
+          <ul>
+            <li><span class="gesture drag-icon" aria-hidden="true">↗</span><span><strong>Drag</strong> nodes to rearrange</span></li>
+            <li><span class="gesture" aria-hidden="true">＋</span><span><strong>Scroll or pinch</strong> to zoom</span></li>
+            <li><span class="gesture" aria-hidden="true">◎</span><span><strong>Select</strong> a node for details</span></li>
+          </ul>
+        </div>
+      </aside>
+
+      <section id="graph" class="graph-panel" aria-label="Interactive knowledge graph">
+        <svg id="graph-svg" role="img" aria-labelledby="graph-title graph-desc">
+          <title id="graph-title">Tim's interactive knowledge graph</title>
+          <desc id="graph-desc">A force-directed network of connected topics. Drag nodes, pan the canvas, or zoom to explore.</desc>
+          <defs>
+            <filter id="node-glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <g id="viewport">
+            <g id="links"></g>
+            <g id="nodes"></g>
+          </g>
+        </svg>
+        <div class="graph-actions" aria-label="View controls">
+          <button id="zoom-in" type="button" aria-label="Zoom in">+</button>
+          <button id="zoom-out" type="button" aria-label="Zoom out">−</button>
+          <button id="reset-view" type="button" aria-label="Reset view">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v5h5M20 20v-5h-5M5.5 16a8 8 0 0 0 13-2M18.5 8a8 8 0 0 0-13 2"/></svg>
+          </button>
+        </div>
+        <div id="empty-state" class="empty-state" hidden>
+          <strong>No ideas found</strong>
+          <span>Try another search or enable more categories.</span>
+          <button type="button">Reset filters</button>
+        </div>
+        <p class="canvas-hint">Scroll to zoom · Drag space to pan</p>
+      </section>
+
+      <aside id="detail-panel" class="detail-panel" aria-live="polite" aria-label="Selected topic details">
+        <div id="detail-placeholder" class="detail-placeholder">
+          <div class="orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+          <p>Select a node to see how it connects.</p>
+        </div>
+        <div id="detail-content" hidden>
+          <button id="close-detail" class="close-detail" type="button" aria-label="Close details">×</button>
+          <span id="detail-category" class="detail-category"></span>
+          <h2 id="detail-title"></h2>
+          <p id="detail-description"></p>
+          <div class="connection-heading"><span>Connected to</span><strong id="connection-count"></strong></div>
+          <div id="detail-links" class="detail-links"></div>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <script src="graph-data.js?v=1"></script>
+  <script src="app.js?v=4"></script>
+</body>
+</html>
