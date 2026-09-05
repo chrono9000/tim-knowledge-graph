@@ -1,3 +1,3 @@
 # Logs
 
-Placeholder for local logs from future agent or data-processing runs. No logging process is active in this refactor.
+Each non-dry ingestion run writes one `ingestion-<timestamp>.jsonl` audit file here. Events record source additions, node and edge additions or merges, processed/skipped/error files, and the final run summary. Dry runs never write logs.

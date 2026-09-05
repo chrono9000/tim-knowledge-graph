@@ -50,13 +50,25 @@
       "enum": ["owner", "primary", "secondary", "tertiary", "unknown"],
       "description": "Authority of the evidence: owner-curated, primary evidence, secondary analysis, tertiary summary, or unknown."
     },
+    "entityType": {
+      "type": "string",
+      "enum": ["entity", "project", "decision", "person", "system", "policy", "event", "open-issue", "historical-note"],
+      "description": "Semantic class assigned to an extracted node."
+    },
+    "statementType": {
+      "type": "string",
+      "enum": ["fact", "decision", "recommendation", "assumption", "unresolved-question", "policy"],
+      "description": "Epistemic class of a node or relationship assertion."
+    },
     "timestamps": {
       "type": "object",
       "additionalProperties": false,
       "required": ["createdAt", "updatedAt"],
       "properties": {
         "createdAt": { "$ref": "#/$defs/timestamp" },
-        "updatedAt": { "$ref": "#/$defs/timestamp" }
+        "updatedAt": { "$ref": "#/$defs/timestamp" },
+        "firstSeen": { "$ref": "#/$defs/timestamp" },
+        "lastSeen": { "$ref": "#/$defs/timestamp" }
       }
     },
     "provenance": {
@@ -94,9 +106,12 @@
         "title": { "type": "string", "minLength": 1 },
         "type": {
           "type": "string",
-          "enum": ["curated", "document", "webpage", "dataset", "interview", "observation", "generated", "other"]
+          "enum": ["curated", "document", "webpage", "dataset", "conversation", "interview", "observation", "generated", "other"]
         },
         "location": { "type": "string", "minLength": 1, "description": "URL, repository locator, or other stable source address." },
+        "filename": { "type": "string", "minLength": 1, "description": "Input filename relative to data/raw." },
+        "sourceTimestamp": { "$ref": "#/$defs/timestamp" },
+        "contentHash": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "SHA-256 of the exact source bytes." },
         "retrievedAt": { "$ref": "#/$defs/timestamp" },
         "confidence": { "$ref": "#/$defs/confidence" },
         "authorityLevel": { "$ref": "#/$defs/authorityLevel" }
@@ -114,6 +129,8 @@
             "label": { "type": "string", "minLength": 1 },
             "category": { "$ref": "#/$defs/identifier" },
             "description": { "type": "string", "minLength": 1 },
+            "entityType": { "$ref": "#/$defs/entityType" },
+            "statementType": { "$ref": "#/$defs/statementType" },
             "sourceIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/identifier" } },
             "timestamps": { "$ref": "#/$defs/timestamps" },
             "confidence": { "$ref": "#/$defs/confidence" },
@@ -135,6 +152,7 @@
             "target": { "$ref": "#/$defs/identifier" },
             "relationship": { "$ref": "#/$defs/identifier" },
             "directed": { "type": "boolean", "default": false },
+            "statementType": { "$ref": "#/$defs/statementType" },
             "sourceIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/identifier" } },
             "timestamps": { "$ref": "#/$defs/timestamps" },
             "confidence": { "$ref": "#/$defs/confidence" },

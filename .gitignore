@@ -1,0 +1,35 @@
+__pycache__/
+*.py[cod]
+
+# Raw source material is local-only. Keep only documentation/placeholders.
+data/raw/*
+!data/raw/README.md
+!data/raw/.gitkeep
+
+# Generated ingestion state is local-only. Keep only documentation/placeholders.
+data/processed/*
+!data/processed/README.md
+!data/processed/.gitkeep
+**/ingestion-manifest.json
+
+# Ingestion logs can contain source-derived metadata.
+logs/*
+!logs/README.md
+!logs/.gitkeep
+**/ingestion-*.jsonl
+
+# Conversation and chat exports are private input, wherever they are placed.
+**/conversations.json
+**/*conversation-export*.json
+**/*conversation_export*.json
+**/*chat-export*.json
+**/*chat_export*.json
+
+# Temporary, backup, and editor files.
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*~
+~$*

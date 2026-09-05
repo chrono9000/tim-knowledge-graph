@@ -13,20 +13,20 @@ A static, interactive knowledge graph with a clean data boundary for future agen
 ## Architecture
 
 ```text
-agent/              future agent instructions and orchestration
+agent/              deterministic Python ingestion agent and tests
 data/
   raw/              future immutable source captures
-  processed/        future normalized, reviewable records
+  processed/        processed-file manifest and future normalized records
   graph.json        canonical graph consumed by the frontend
 schemas/            JSON Schema and field documentation
 scripts/            future validation and maintenance utilities
-logs/               future local run logs
+logs/               JSON Lines ingestion audit logs
 index.html           static application shell
 app.js               graph rendering and interaction code
 styles.css           visual design
 ```
 
-The placeholders do not run anything. This repository contains no automatic ingestion, bot, scheduled job, or external service.
+The ingestion agent is manual and deterministic. It contains no external AI API, network request, bot, or scheduled job. See [`agent/`](agent/README.md) for its input syntax, dry-run mode, merge guarantees, and test command.
 
 ## Data flow
 
@@ -40,4 +40,4 @@ Serve the repository root with any static HTTP server, then open `index.html` th
 
 ## Deployment
 
-Every push to `main` is published to GitHub Pages by the workflow in `.github/workflows/pages.yml`.
+Every push to `main` is published to GitHub Pages by the workflow in `.github/workflows/pages.yml`. The deployment artifact contains only the frontend, `data/graph.json`, and the JSON Schema; raw sources, processed manifests, logs, agent code, and tests are excluded.
