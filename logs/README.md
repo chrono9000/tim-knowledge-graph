@@ -1,3 +1,5 @@
 # Logs
 
-Each non-dry ingestion run writes one `ingestion-<timestamp>.jsonl` audit file here. Events record source additions, node and edge additions or merges, processed/skipped/error files, and the final run summary. Dry runs never write logs.
+Controlled intake actions append private JSON Lines events to `intake-<date>.jsonl`. Events identify affected proposal IDs and batches without copying raw conversation text into the log.
+
+Actual log files are ignored by Git and excluded from the Pages artifact; only this README is tracked.

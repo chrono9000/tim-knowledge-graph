@@ -1,5 +1,5 @@
 # Processed data
 
-The ingestion agent writes `ingestion-manifest.json` here after a successful non-dry run. It records each raw filename, latest content hash, immutable source ID, source timestamp, and processing timestamp so unchanged files can be skipped safely.
+This ignored directory is reserved for private runtime manifests or future normalized records. The controlled intake workflow keeps its active review queue in `data/staging/` and does not require a tracked manifest.
 
-Future normalized, human-reviewable intermediate records may also live here. Nothing in this directory runs automatically.
+Only this README is tracked. Nothing here runs automatically or is included in GitHub Pages.

@@ -1,6 +1,6 @@
 # Tim's Knowledge Graph
 
-A static, interactive knowledge graph with a clean data boundary for future agent-driven curation. The existing visual experience remains dependency-free and deploys directly to GitHub Pages.
+A static, interactive public knowledge graph with a separate, controlled private intake workflow. The visual experience remains dependency-free and deploys directly to GitHub Pages.
 
 ## Explore
 
@@ -13,31 +13,37 @@ A static, interactive knowledge graph with a clean data boundary for future agen
 ## Architecture
 
 ```text
-agent/              deterministic Python ingestion agent and tests
+agent/              deterministic extraction and review commands
 data/
-  raw/              future immutable source captures
-  processed/        processed-file manifest and future normalized records
-  graph.json        canonical graph consumed by the frontend
-schemas/            JSON Schema and field documentation
-scripts/            future validation and maintenance utilities
-logs/               JSON Lines ingestion audit logs
-index.html           static application shell
-app.js               graph rendering and interaction code
-styles.css           visual design
+  raw/              ignored private source material (README tracked)
+  processed/        ignored legacy/runtime manifests (README tracked)
+  private/          ignored private master graph (README tracked)
+  staging/          ignored review proposals (README tracked)
+  graph.json        approved public graph consumed by the frontend
+schemas/            public graph schema and private proposal documentation
+scripts/            future maintenance utilities
+logs/               ignored private intake logs (README tracked)
+index.html          static application shell
+app.js              graph rendering and interaction code
+styles.css          visual design
 ```
 
-The ingestion agent is manual and deterministic. It contains no external AI API, network request, bot, or scheduled job. See [`agent/`](agent/README.md) for its input syntax, dry-run mode, merge guarantees, and test command.
+## Controlled data flow
 
-## Data flow
+```text
+private export -> import -> staging review -> private approval
+                                   |
+                                   +-> public approval -> publish -> data/graph.json
+```
 
-When the page loads, `app.js` resolves `./data/graph.json` against the current document URL and fetches it. This relative URL works both at a local server root and under the `/tim-knowledge-graph/` project path used by GitHub Pages. The JSON document contains display categories, source records, nodes, and edges; its contract is documented in [`schemas/`](schemas/README.md).
+Import and preview never change a graph. Every accepted record first enters the ignored private master. Only proposals explicitly marked `approved-public` can be copied into `data/graph.json`, and publication strips raw filenames and content hashes from public provenance. See [`agent/README.md`](agent/README.md) for exact formats and commands.
 
-To change the graph, edit `data/graph.json` rather than JavaScript. Keep IDs unique, ensure every edge endpoint names an existing node, and attach every node and edge to at least one top-level source.
+When the page loads, `app.js` resolves `./data/graph.json` against the current document URL. This relative URL works both at a local server root and under the `/tim-knowledge-graph/` GitHub Pages project path.
 
 ## Run locally
 
 Serve the repository root with any static HTTP server, then open `index.html` through that server. Opening the file directly is not supported because browsers restrict JSON requests from `file:` URLs.
 
-## Deployment
+## Deployment boundary
 
-Every push to `main` is published to GitHub Pages by the workflow in `.github/workflows/pages.yml`. The deployment artifact contains only the frontend, `data/graph.json`, and the JSON Schema; raw sources, processed manifests, logs, agent code, and tests are excluded.
+Every push to `main` is published by `.github/workflows/pages.yml`. Its explicit artifact allowlist includes only `index.html`, `app.js`, `styles.css`, `data/graph.json`, and `schemas/graph.schema.json`. Private sources, master data, staging proposals, logs, manifests, tests, and agent code are excluded.

@@ -1,4 +1,4 @@
-from .ingest import main
+from .intake import main
 
 
 if __name__ == "__main__":

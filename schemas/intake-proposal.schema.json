@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chrono9000.github.io/tim-knowledge-graph/schemas/intake-proposal.schema.json",
+  "title": "Private knowledge intake staging queue",
+  "type": "object",
+  "required": ["schemaVersion", "batches"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "batches": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/batch" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "timestamp": { "type": "string", "format": "date-time" },
+    "authority": {
+      "enum": ["owner", "primary", "secondary", "tertiary", "unknown"]
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["sourceFilename", "sourceTimestamp", "confidence", "authorityLevel", "firstSeen", "lastSeen"],
+      "properties": {
+        "sourceFilename": { "type": "string", "minLength": 1 },
+        "sourceTimestamp": { "$ref": "#/$defs/timestamp" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "authorityLevel": { "$ref": "#/$defs/authority" },
+        "firstSeen": { "$ref": "#/$defs/timestamp" },
+        "lastSeen": { "$ref": "#/$defs/timestamp" }
+      },
+      "additionalProperties": true
+    },
+    "proposal": {
+      "type": "object",
+      "required": ["id", "kind", "recordType", "targetId", "status", "reviewReasons", "proposedRecord", "provenance"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["add", "update", "duplicate", "contradiction"] },
+        "recordType": { "enum": ["source", "node", "edge"] },
+        "targetId": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["pending", "approved-private", "approved-public", "rejected", "needs-review"] },
+        "reviewReasons": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "previousRecord": { "type": ["object", "null"] },
+        "proposedRecord": { "type": ["object", "null"] },
+        "provenance": { "$ref": "#/$defs/provenance" },
+        "reviewedAt": { "anyOf": [{ "$ref": "#/$defs/timestamp" }, { "type": "null" }] },
+        "publishedAt": { "anyOf": [{ "$ref": "#/$defs/timestamp" }, { "type": "null" }] }
+      },
+      "additionalProperties": true
+    },
+    "batch": {
+      "type": "object",
+      "required": ["id", "private", "sourceFilename", "sourceTimestamp", "importedAt", "contentHash", "proposals"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "private": { "const": true },
+        "sourceFilename": { "type": "string", "minLength": 1 },
+        "sourceTimestamp": { "$ref": "#/$defs/timestamp" },
+        "importedAt": { "$ref": "#/$defs/timestamp" },
+        "contentHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "source": { "type": "object" },
+        "proposals": { "type": "array", "items": { "$ref": "#/$defs/proposal" } }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -15,3 +15,5 @@ Authority levels are:
 - `unknown`: authority has not yet been assessed
 
 Top-level `sources` hold the reusable source details. A future agent may add records only when their `sourceIds` resolve to those entries. JSON Schema validates shape and values; repository validation must also enforce unique IDs and valid category, source, and edge endpoint references.
+
+[`intake-proposal.schema.json`](intake-proposal.schema.json) documents the private staging format, including review status, proposed and previous records, provenance, timestamps, confidence, and authority. It is repository documentation only and is deliberately excluded from the public Pages artifact.

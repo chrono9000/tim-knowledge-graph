@@ -12,11 +12,20 @@ data/processed/*
 !data/processed/.gitkeep
 **/ingestion-manifest.json
 
+# Private master knowledge and review staging never enter version control.
+data/private/*
+!data/private/README.md
+!data/private/.gitkeep
+data/staging/*
+!data/staging/README.md
+!data/staging/.gitkeep
+
 # Ingestion logs can contain source-derived metadata.
 logs/*
 !logs/README.md
 !logs/.gitkeep
 **/ingestion-*.jsonl
+**/intake-*.jsonl
 
 # Conversation and chat exports are private input, wherever they are placed.
 **/conversations.json
@@ -24,6 +33,14 @@ logs/*
 **/*conversation_export*.json
 **/*chat-export*.json
 **/*chat_export*.json
+**/*conversation-export*.zip
+**/*conversation_export*.zip
+**/*chat-export*.zip
+**/*chat_export*.zip
+**/*project-export*.json
+**/*project_export*.json
+**/*project-export*.zip
+**/*project_export*.zip
 
 # Temporary, backup, and editor files.
 *.tmp

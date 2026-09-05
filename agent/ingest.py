@@ -829,15 +829,11 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    arguments = build_parser().parse_args(argv)
-    config = IngestionConfig(arguments.raw_dir.resolve(), arguments.graph.resolve(), arguments.manifest.resolve(), arguments.log_dir.resolve(), arguments.dry_run, arguments.authority_tier)
-    try:
-        result = run_ingestion(config)
-    except (OSError, ValueError, RuntimeError, json.JSONDecodeError) as error:
-        print(json.dumps({"status": "error", "error": str(error)}, indent=2))
-        return 1
-    print(json.dumps({"status": "ok" if not result.errors else "completed-with-errors", **result.as_dict()}, indent=2))
-    return 1 if result.errors else 0
+    print(json.dumps({
+        "status": "error",
+        "error": "Direct ingestion is disabled. Use `python -m agent import`, review the proposals, then approve and publish them explicitly.",
+    }, indent=2))
+    return 2
 
 
 if __name__ == "__main__":
