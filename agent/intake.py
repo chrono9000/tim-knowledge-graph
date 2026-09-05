@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+from .harness import affected_rule_ids, evaluate_proposal, load_harness
 from .ingest import (
     AUTHORITY_CONFIDENCE,
     AUTHORITY_LEVELS,
@@ -49,6 +50,7 @@ SENSITIVE_PATTERN = re.compile(
     r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|(?:\+?1[-. ]?)?\(?\d{3}\)?[-. ]?\d{3}[-. ]?\d{4})"
 )
 NEGATION_PATTERN = re.compile(r"\b(?:not|never|no longer|isn't|wasn't|won't|cannot|can't)\b", re.IGNORECASE)
+SUPERSESSION_PATTERN = re.compile(r"\b(?:superseded|supersedes|replaced by|replaces|no longer current|obsolete)\b", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -58,6 +60,7 @@ class IntakeConfig:
     staging_path: Path
     log_dir: Path
     clock: Any = utc_now
+    harness_path: Path | None = None
 
 
 @dataclass
@@ -87,6 +90,7 @@ def default_config() -> IntakeConfig:
         private_graph_path=root / "data" / "private" / "master-graph.json",
         staging_path=root / "data" / "staging" / "proposals.json",
         log_dir=root / "logs",
+        harness_path=root / "agent" / "harness.json",
     )
 
 
@@ -206,12 +210,13 @@ def _read_export(path: Path) -> tuple[bytes, ExtractedDocument, str]:
 
 def _record_provenance(record: dict[str, Any], source: dict[str, Any]) -> dict[str, Any]:
     timestamps = record.get("timestamps", {})
+    confidence = min(float(record.get("confidence", source["confidence"])), float(source["confidence"]))
     return {
         "sourceId": source["id"],
         "sourceFilename": source["filename"],
         "sourceTimestamp": source["sourceTimestamp"],
-        "confidence": record.get("confidence", source["confidence"]),
-        "authorityLevel": record.get("authorityLevel", source["authorityLevel"]),
+        "confidence": confidence,
+        "authorityLevel": source["authorityLevel"],
         "firstSeen": timestamps.get("firstSeen", source["sourceTimestamp"]),
         "lastSeen": timestamps.get("lastSeen", source["sourceTimestamp"]),
     }
@@ -225,9 +230,12 @@ def _review_reasons(record: dict[str, Any], previous: dict[str, Any] | None, sou
     reasons: list[str] = []
     review_record = proposed or record
     searchable = " ".join(str(review_record.get(key, "")) for key in ("label", "description", "relationship"))
+    if review_record.get("statementType") == "assumption":
+        reasons.append("unsupported-inference")
     if SENSITIVE_PATTERN.search(searchable):
         reasons.append("sensitive-information")
-    if float(review_record.get("confidence", record.get("confidence", source["confidence"]))) < LOW_CONFIDENCE:
+    incoming_confidence = min(float(review_record.get("confidence", record.get("confidence", source["confidence"]))), float(source["confidence"]))
+    if incoming_confidence < LOW_CONFIDENCE:
         reasons.append("low-confidence")
     if previous:
         reasons.append("possible-duplicate")
@@ -236,17 +244,21 @@ def _review_reasons(record: dict[str, Any], previous: dict[str, Any] | None, sou
             reasons.append("authority-conflict")
         old_text = " ".join(str(previous.get(key, "")) for key in ("label", "description"))
         overlap = _assertion_tokens(searchable) & _assertion_tokens(old_text)
+        if overlap and SUPERSESSION_PATTERN.search(searchable):
+            reasons.append("possible-supersession")
         if overlap and bool(NEGATION_PATTERN.search(searchable)) != bool(NEGATION_PATTERN.search(old_text)):
             reasons.append("possible-contradiction")
     return sorted(set(reasons))
 
 
-def _proposal(batch_id: str, kind: str, action: str, record: dict[str, Any], source: dict[str, Any], previous: dict[str, Any] | None = None, proposed: dict[str, Any] | None = None) -> dict[str, Any]:
+def _proposal(batch_id: str, kind: str, action: str, record: dict[str, Any], source: dict[str, Any], harness: dict[str, Any], previous: dict[str, Any] | None = None, proposed: dict[str, Any] | None = None) -> dict[str, Any]:
     reasons = _review_reasons(record, previous, source, proposed)
     identity = f"{batch_id}\0{kind}\0{record['id']}"
+    policy_decision = evaluate_proposal(harness, record, source, reasons, previous, proposed)
+    proposal_kind = "supersession" if "possible-supersession" in reasons else ("contradiction" if "possible-contradiction" in reasons else kind)
     return {
         "id": f"proposal-{hashlib.sha256(identity.encode()).hexdigest()[:16]}",
-        "kind": "contradiction" if "possible-contradiction" in reasons else kind,
+        "kind": proposal_kind,
         "recordType": kind if kind in {"source", "node", "edge"} else ("edge" if "source" in record and "target" in record else "node"),
         "action": action,
         "targetId": record["id"],
@@ -255,7 +267,8 @@ def _proposal(batch_id: str, kind: str, action: str, record: dict[str, Any], sou
         "record": record,
         "proposedRecord": proposed,
         "previousRecord": previous,
-        "provenance": _record_provenance(record, source),
+        "provenance": _record_provenance(proposed or record, source),
+        "policyDecision": policy_decision,
         "reviewedAt": None,
         "publishedAt": None,
     }
@@ -272,6 +285,7 @@ def import_export(path: Path, config: IntakeConfig, authority_override: str = "a
     if existing_batch:
         return WorkflowResult("import", existing_batch["id"], details={"duplicateImport": True, "proposalCount": len(existing_batch["proposals"])})
     now = iso_timestamp(config.clock())
+    harness = load_harness(config.harness_path)
     master = load_private_master(config)
     candidate = copy.deepcopy(master)
     authority = infer_authority(path, document, authority_override)
@@ -295,7 +309,7 @@ def import_export(path: Path, config: IntakeConfig, authority_override: str = "a
     validate_graph(candidate)
     batch_id = f"batch-{digest[:16]}"
     proposals: list[dict[str, Any]] = []
-    proposals.append(_proposal(batch_id, "source", "add", source, source))
+    proposals.append(_proposal(batch_id, "source", "add", source, source, harness))
     for collection, kind in (("nodes", "node"), ("edges", "edge")):
         before = {item["id"]: item for item in master[collection]}
         for record in candidate[collection]:
@@ -313,7 +327,9 @@ def import_export(path: Path, config: IntakeConfig, authority_override: str = "a
                             "confidence": candidate_node.confidence,
                             "authorityLevel": authority,
                         }
-                proposals.append(_proposal(batch_id, "duplicate" if previous else kind, "update" if previous else "add", record, source, previous, proposed))
+                        if candidate_node.preserve_exact_wording:
+                            proposed["exactWording"] = True
+                proposals.append(_proposal(batch_id, "duplicate" if previous else kind, "update" if previous else "add", record, source, harness, previous, proposed))
     batch = {
         "id": batch_id,
         "importedAt": now,
@@ -321,6 +337,8 @@ def import_export(path: Path, config: IntakeConfig, authority_override: str = "a
         "sourceTimestamp": observed_at,
         "contentHash": digest,
         "private": True,
+        "harnessId": harness["id"],
+        "harnessVersion": harness["version"],
         "source": source,
         "proposals": proposals,
     }
@@ -330,6 +348,7 @@ def import_export(path: Path, config: IntakeConfig, authority_override: str = "a
         "batchId": batch_id,
         "sourceFilename": path.name,
         "proposalIds": [item["id"] for item in proposals],
+        "ruleIds": affected_rule_ids(proposals),
         "proposalCount": len(proposals),
     })
     return WorkflowResult("import", batch_id, [item["id"] for item in proposals], details={"duplicateImport": False, "proposalCount": len(proposals)})
@@ -376,20 +395,57 @@ def _merge_provenance(existing: dict[str, Any], incoming: dict[str, Any]) -> Non
         existing["authorityLevel"] = incoming["authorityLevel"]
 
 
-def _apply_record(graph: dict[str, Any], collection: str, record: dict[str, Any]) -> None:
+def _claim_snapshot(record: dict[str, Any], status: str, observed_at: str | None = None, source_ids: list[str] | None = None) -> dict[str, Any]:
+    return {
+        "description": record.get("description", record.get("label", "")),
+        "statementType": record.get("statementType", "fact"),
+        "sourceIds": list(source_ids if source_ids is not None else record.get("sourceIds", [])),
+        "observedAt": observed_at or record.get("timestamps", {}).get("lastSeen") or record.get("timestamps", {}).get("updatedAt"),
+        "confidence": float(record.get("confidence", 0)),
+        "authorityLevel": record.get("authorityLevel", "unknown"),
+        "status": status,
+    }
+
+
+def _apply_record(graph: dict[str, Any], collection: str, record: dict[str, Any], proposal: dict[str, Any] | None = None) -> None:
     existing = next((item for item in graph[collection] if item["id"] == record["id"]), None)
     if existing is None:
         graph[collection].append(copy.deepcopy(record))
     elif collection != "sources":
         _merge_provenance(existing, record)
+        proposed = proposal.get("proposedRecord") if proposal else None
+        previous = proposal.get("previousRecord") if proposal else None
+        if collection == "nodes" and proposed and previous:
+            precedence = proposal.get("policyDecision", {}).get("authorityPrecedence")
+            use_proposed = precedence in {"prefer-proposed-after-review", "same-tier-review"}
+            previous_status = "superseded" if use_proposed else "retained"
+            proposed_status = "current" if use_proposed else "alternate"
+            history = existing.setdefault("claimHistory", [])
+            provenance = proposal.get("provenance", {})
+            proposed_snapshot = _claim_snapshot(proposed, proposed_status, provenance.get("lastSeen"), [provenance.get("sourceId")])
+            proposed_snapshot["confidence"] = float(provenance.get("confidence", proposed_snapshot["confidence"]))
+            proposed_snapshot["authorityLevel"] = provenance.get("authorityLevel", proposed_snapshot["authorityLevel"])
+            snapshots = [_claim_snapshot(previous, previous_status), proposed_snapshot]
+            for snapshot in snapshots:
+                if snapshot not in history:
+                    history.append(snapshot)
+            if use_proposed:
+                existing["description"] = proposed.get("description", existing.get("description", ""))
+                existing["statementType"] = proposed.get("statementType", existing.get("statementType", "fact"))
+                if proposed.get("exactWording"):
+                    existing["exactWording"] = True
 
 
-def approve(config: IntakeConfig, visibility: str, proposal_ids: Iterable[str] | None = None, batch_id: str | None = None, select_all: bool = False) -> WorkflowResult:
+def approve(config: IntakeConfig, visibility: str, proposal_ids: Iterable[str] | None = None, batch_id: str | None = None, select_all: bool = False, allow_sensitive: bool = False) -> WorkflowResult:
     if visibility not in {"private", "public"}:
         raise ValueError("Approval visibility must be private or public")
     staging = load_staging(config.staging_path)
     allowed = {"pending", "needs-review", "approved-private"} if visibility == "public" else {"pending", "needs-review"}
     selected = _select(staging, proposal_ids, batch_id, select_all, allowed)
+    if visibility == "public" and not allow_sensitive:
+        sensitive = [proposal["id"] for _, proposal in selected if not proposal.get("policyDecision", {}).get("publicEligible", True)]
+        if sensitive:
+            raise ValueError(f"Sensitive proposals require --allow-sensitive for public approval: {sensitive}")
     master_before = load_private_master(config)
     master = copy.deepcopy(master_before)
     now = iso_timestamp(config.clock())
@@ -409,15 +465,15 @@ def approve(config: IntakeConfig, visibility: str, proposal_ids: Iterable[str] |
         seen.add(proposal["id"])
         record = proposal["record"]
         collection = "sources" if proposal["kind"] == "source" else ("edges" if "source" in record and "target" in record else "nodes")
-        _apply_record(master, collection, record)
         proposal["status"] = f"approved-{visibility}"
         proposal["reviewedAt"] = now
+        _apply_record(master, collection, record, proposal)
         touched.append(proposal["id"])
     assert_append_only(master_before, master)
     validate_graph(master)
     atomic_json_write(config.private_graph_path, master)
     atomic_json_write(config.staging_path, staging)
-    _write_log(config, f"approve-{visibility}", {"proposalIds": touched})
+    _write_log(config, f"approve-{visibility}", {"proposalIds": touched, "ruleIds": affected_rule_ids(proposal for _, proposal in ordered if proposal["id"] in seen)})
     return WorkflowResult(f"approve-{visibility}", proposal_ids=touched, proposals_changed=len(touched), graph_changed=master != master_before)
 
 
@@ -431,7 +487,7 @@ def reject(config: IntakeConfig, proposal_ids: Iterable[str] | None = None, batc
         proposal["reviewedAt"] = now
         touched.append(proposal["id"])
     atomic_json_write(config.staging_path, staging)
-    _write_log(config, "reject", {"proposalIds": touched})
+    _write_log(config, "reject", {"proposalIds": touched, "ruleIds": affected_rule_ids(proposal for _, proposal in selected)})
     return WorkflowResult("reject", proposal_ids=touched, proposals_changed=len(touched))
 
 
@@ -469,7 +525,7 @@ def publish(config: IntakeConfig) -> WorkflowResult:
             continue
         record = proposal["record"]
         collection = "edges" if "source" in record and "target" in record else "nodes"
-        _apply_record(graph, collection, record)
+        _apply_record(graph, collection, record, proposal)
         proposal["publishedAt"] = now
         published.append(proposal["id"])
     if graph != original:
@@ -478,7 +534,7 @@ def publish(config: IntakeConfig) -> WorkflowResult:
     validate_graph(graph)
     atomic_json_write(config.public_graph_path, graph)
     atomic_json_write(config.staging_path, staging)
-    _write_log(config, "publish", {"proposalIds": published})
+    _write_log(config, "publish", {"proposalIds": published, "ruleIds": affected_rule_ids(proposal for _, proposal in publishable)})
     return WorkflowResult("publish", proposal_ids=published, proposals_changed=len(published), graph_changed=graph != original, details={"publishedCount": len(published)})
 
 
@@ -489,7 +545,8 @@ def _write_log(config: IntakeConfig, action: str, details: dict[str, Any]) -> No
     config.log_dir.mkdir(parents=True, exist_ok=True)
     path = config.log_dir / f"intake-{run_id}.jsonl"
     with path.open("a", encoding="utf-8", newline="\n") as handle:
-        handle.write(json.dumps({"timestamp": timestamp, "action": action, **details}, sort_keys=True) + "\n")
+        harness = load_harness(config.harness_path)
+        handle.write(json.dumps({"timestamp": timestamp, "action": action, "harnessId": harness["id"], "harnessVersion": harness["version"], **details}, sort_keys=True) + "\n")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -510,6 +567,8 @@ def build_parser() -> argparse.ArgumentParser:
         reviewer.add_argument("proposal_ids", nargs="*")
         reviewer.add_argument("--batch")
         reviewer.add_argument("--all", action="store_true")
+        if name == "approve-public":
+            reviewer.add_argument("--allow-sensitive", action="store_true", help="Explicitly allow reviewed sensitive content to receive public approval.")
     subparsers.add_parser("publish", help="Publish only approved-public proposals.")
     return parser
 
@@ -525,7 +584,7 @@ def main(argv: list[str] | None = None) -> int:
         elif arguments.command == "approve-private":
             result = approve(config, "private", arguments.proposal_ids, arguments.batch, arguments.all).as_dict()
         elif arguments.command == "approve-public":
-            result = approve(config, "public", arguments.proposal_ids, arguments.batch, arguments.all).as_dict()
+            result = approve(config, "public", arguments.proposal_ids, arguments.batch, arguments.all, arguments.allow_sensitive).as_dict()
         elif arguments.command == "reject":
             result = reject(config, arguments.proposal_ids, arguments.batch, arguments.all).as_dict()
         else:

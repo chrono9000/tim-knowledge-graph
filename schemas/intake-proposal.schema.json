@@ -32,10 +32,10 @@
     },
     "proposal": {
       "type": "object",
-      "required": ["id", "kind", "recordType", "targetId", "status", "reviewReasons", "proposedRecord", "provenance"],
+      "required": ["id", "kind", "recordType", "targetId", "status", "reviewReasons", "proposedRecord", "provenance", "policyDecision"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
-        "kind": { "enum": ["add", "update", "duplicate", "contradiction"] },
+        "kind": { "enum": ["add", "update", "duplicate", "contradiction", "supersession"] },
         "recordType": { "enum": ["source", "node", "edge"] },
         "targetId": { "type": "string", "minLength": 1 },
         "status": { "enum": ["pending", "approved-private", "approved-public", "rejected", "needs-review"] },
@@ -43,6 +43,21 @@
         "previousRecord": { "type": ["object", "null"] },
         "proposedRecord": { "type": ["object", "null"] },
         "provenance": { "$ref": "#/$defs/provenance" },
+        "policyDecision": {
+          "type": "object",
+          "required": ["harnessId", "harnessVersion", "ruleIds", "ruleEffects", "classification", "publicEligible", "requiresReview", "authorityPrecedence"],
+          "properties": {
+            "harnessId": { "type": "string", "minLength": 1 },
+            "harnessVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+            "ruleIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3}$" } },
+            "ruleEffects": { "type": "array", "items": { "type": "object", "required": ["ruleId", "topic"] } },
+            "classification": { "const": "private" },
+            "publicEligible": { "type": "boolean" },
+            "requiresReview": { "type": "boolean" },
+            "authorityPrecedence": { "enum": ["new-record", "prefer-proposed-after-review", "retain-existing-unless-review-overrides", "same-tier-review"] }
+          },
+          "additionalProperties": true
+        },
         "reviewedAt": { "anyOf": [{ "$ref": "#/$defs/timestamp" }, { "type": "null" }] },
         "publishedAt": { "anyOf": [{ "$ref": "#/$defs/timestamp" }, { "type": "null" }] }
       },
@@ -50,10 +65,12 @@
     },
     "batch": {
       "type": "object",
-      "required": ["id", "private", "sourceFilename", "sourceTimestamp", "importedAt", "contentHash", "proposals"],
+      "required": ["id", "private", "harnessId", "harnessVersion", "sourceFilename", "sourceTimestamp", "importedAt", "contentHash", "proposals"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
         "private": { "const": true },
+        "harnessId": { "type": "string", "minLength": 1 },
+        "harnessVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
         "sourceFilename": { "type": "string", "minLength": 1 },
         "sourceTimestamp": { "$ref": "#/$defs/timestamp" },
         "importedAt": { "$ref": "#/$defs/timestamp" },

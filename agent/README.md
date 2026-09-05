@@ -2,6 +2,8 @@
 
 This package provides a manual, deterministic, review-gated intake workflow. Imports are private by default: they create proposals in ignored local storage and never change either graph. Reviewers choose what enters the private master graph and must make a separate, explicit choice before anything can enter the public graph.
 
+The operating contract is defined in human-readable form by [`HARNESS.md`](HARNESS.md) and machine-readable form by [`harness.json`](harness.json). Every proposal records the harness ID/version, applicable rule IDs, rule topics, authority-precedence recommendation, privacy eligibility, and review requirement. Audit events carry the same harness version and affected rule IDs.
+
 Python 3.10 or newer is required. The package uses only the standard library and makes no network requests or external AI API calls.
 
 ## Storage boundary
@@ -20,8 +22,8 @@ The import command accepts UTF-8 `.txt`, `.md`, `.json`, or `.zip` files:
 
 1. Official ChatGPT `conversations.json`: a JSON array of conversation objects using `title`, `create_time`, `update_time`, and `mapping`. Messages are read from each mapping entry's `message.author.role` and `message.content.parts` fields.
 2. A single ChatGPT conversation object with the same `mapping` structure.
-3. Structured project JSON with arrays named `entities`, `people`, `projects`, `decisions`, `systems`, `policies`, `events`, `openIssues`/`open_issues`, or `historicalNotes`/`historical_notes`, plus optional `relationships` or `edges`.
-4. Plain-text or Markdown notes. Deterministic prefixes include `Entity`, `Project`, `Decision`, `Person`, `System`, `Policy`, `Event`, `Open issue`, `Historical note`, `Fact`, `Recommendation`, `Assumption`, and `Question`. Relationships use `Relationship: source | label | target` or `source -> label -> target`.
+3. Structured project JSON with arrays named `entities`, `people`, `projects`, `decisions`, `systems`, `policies`, `events`, `openIssues`/`open_issues`, or `historicalNotes`/`historical_notes`, plus optional `relationships` or `edges`. An item may use `owner`; decisions may use `decisionOwner` or `decision_owner`. These explicit fields create owner relationships—ownership is never inferred from proximity. Set `preserveExactWording: true` with `approvedWording` when approved wording must remain verbatim.
+4. Plain-text or Markdown notes. Deterministic prefixes include `Entity`, `Project`, `Decision`, `Person`, `System`, `Policy`, `Event`, `Open issue`, `Historical note`, `Fact`, `Preference`, `Recommendation`, `Assumption`, `Superseded`, and `Question`. Relationships use `Relationship: source | label | target` or `source -> label -> target`. Untagged statements without a supported epistemic signal are staged as assumptions rather than facts.
 5. ZIP project exports containing supported files. Archives are read in memory, capped at 1,000 entries and 25 MiB uncompressed, and may not be encrypted.
 
 Attachments, images, HTML exports, custom ChatGPT data layouts, and encrypted archives are not supported. Unsupported files inside ZIP exports are ignored.
@@ -36,6 +38,7 @@ python -m agent preview
 python -m agent preview --status needs-review
 python -m agent approve-private --batch BATCH_ID
 python -m agent approve-public PROPOSAL_ID
+python -m agent approve-public PROPOSAL_ID --allow-sensitive
 python -m agent reject PROPOSAL_ID
 python -m agent publish
 ```
@@ -43,6 +46,8 @@ python -m agent publish
 Use `--all` only after reviewing the full queue. Global path overrides (`--public-graph`, `--private-graph`, `--staging`, and `--log-dir`) support isolated testing and private deployments. `--authority-tier` on import can explicitly set source authority.
 
 Review statuses are `pending`, `needs-review`, `approved-private`, `approved-public`, and `rejected`. Possible contradictions, duplicate updates, authority conflicts, sensitive-looking content, and confidence below 0.7 are marked `needs-review`. Approval is always manual even for ordinary `pending` items.
+
+Sensitive proposals are not public-eligible by default. `approve-public` refuses them unless the reviewer supplies `--allow-sensitive`; that flag is an explicit classification override, not automatic publication. `publish` remains a separate command.
 
 `approve-private` merges selected proposals only into the private master. `approve-public` also merges them into the private master but merely marks them eligible for publication. `publish` is the only command that changes `data/graph.json`; it publishes only `approved-public` records and replaces private source details with a non-sensitive provenance reference.
 

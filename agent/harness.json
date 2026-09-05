@@ -1,0 +1,75 @@
+{
+  "$schema": "../schemas/agent-harness.schema.json",
+  "id": "feos-knowledge-graph-operating-harness",
+  "version": "1.0.0",
+  "effectiveAt": "2026-09-05T00:00:00Z",
+  "purpose": "Convert private source material into traceable graph proposals while preserving human authority, privacy, and the append-only public record.",
+  "scope": ["deterministic extraction", "proposal classification", "private review", "public approval", "publication", "audit and recovery"],
+  "boundaries": [
+    "No autonomous publication, deletion, external AI service, network ingestion, or unsupported inference.",
+    "The harness recommends precedence but never silently resolves a substantive conflict.",
+    "Raw source content, private graphs, staging data, and logs remain outside the Pages artifact."
+  ],
+  "statementTypes": {
+    "fact": "A verifiable claim presented as true and supported by identified evidence.",
+    "decision": "A committed choice made by an identified authorized decision owner.",
+    "preference": "A stated inclination of an identified person or owner; it is not a fact or policy.",
+    "recommendation": "Advice about a possible action; it is not an approved decision.",
+    "assumption": "A working premise that lacks sufficient verification.",
+    "unresolved-question": "An explicitly open question or issue awaiting an answer.",
+    "policy": "A currently governing rule issued by an authorized owner or authoritative record.",
+    "superseded": "Information retained for history after a later approved record replaces its current applicability."
+  },
+  "authority": {
+    "model": "FEOS",
+    "tiers": [
+      {"id": "owner", "rank": 500, "confidenceCap": 1.0, "description": "Explicitly approved canonical wording, owner instruction, or owner-authorized policy/decision."},
+      {"id": "primary", "rank": 400, "confidenceCap": 0.9, "description": "Original evidence, direct statement by the subject or decision owner, or signed/contemporaneous official record."},
+      {"id": "secondary", "rank": 300, "confidenceCap": 0.75, "description": "Analysis or reliable retelling grounded in primary evidence."},
+      {"id": "tertiary", "rank": 200, "confidenceCap": 0.6, "description": "Summary, index, recollection, or synthesis without direct evidence."},
+      {"id": "unknown", "rank": 100, "confidenceCap": 0.5, "description": "Authority has not been established."}
+    ],
+    "sameTierPriority": ["exact-approved-wording", "identified-decision-owner-or-subject", "signed-policy-or-decision-record", "contemporaneous-record", "later-restatement", "conversation-recollection", "deterministic-extraction"],
+    "conflictRule": "Recommend the higher-ranked source, preserve both claims and provenance, and require human review; never overwrite silently."
+  },
+  "confidence": {
+    "meaning": "Strength of support for this extraction, not probability that the statement is true.",
+    "reviewBelow": 0.7,
+    "rules": [
+      "Start from deterministic extraction confidence and cap it at the source authority tier's confidenceCap.",
+      "Do not average conflicting claims or raise confidence merely because a claim is repeated.",
+      "Explicitly tagged records may score higher than unstructured inference, but source authority remains the cap.",
+      "Any score below reviewBelow requires review and defaults to private."
+    ]
+  },
+  "classification": {
+    "default": "private",
+    "publicRequires": ["approved-public status", "resolved sensitive-information gate", "valid provenance", "referential integrity"],
+    "sensitiveSignals": ["credentials", "government identifiers", "email addresses", "phone numbers", "private personal details", "confidential organization or client material"],
+    "sensitiveDefault": "private"
+  },
+  "rules": [
+    {"id": "HARNESS-001", "topic": "purpose-boundary", "requirement": "Operate only within the documented deterministic intake, review, approval, publication, audit, and recovery workflow."},
+    {"id": "EPI-001", "topic": "statement-classification", "requirement": "Classify each assertion as fact, decision, preference, recommendation, assumption, unresolved-question, policy, or superseded."},
+    {"id": "EPI-002", "topic": "unsupported-inference", "requirement": "Never store an unsupported inference as fact; classify it as assumption or unresolved-question and require review."},
+    {"id": "AUTH-001", "topic": "feos-authority", "requirement": "Apply FEOS tiers owner > primary > secondary > tertiary > unknown."},
+    {"id": "AUTH-002", "topic": "source-priority", "requirement": "Recommend higher authority, then same-tier source priority, without silently resolving conflicts."},
+    {"id": "OWNER-001", "topic": "ownership", "requirement": "Identify entity or decision owners only from explicit owner fields or explicit owner/decision-owner relationships; never infer ownership from mention or proximity."},
+    {"id": "PROV-001", "topic": "provenance", "requirement": "Retain source ID, private filename, content hash, source timestamp, authority, confidence, and retrieval time in private staging."},
+    {"id": "TIME-001", "topic": "timestamps", "requirement": "Retain source, first-seen, last-seen, created, updated, review, and publication timestamps where applicable."},
+    {"id": "CONF-001", "topic": "confidence", "requirement": "Cap extraction confidence by source authority and treat confidence as evidence strength rather than truth."},
+    {"id": "CONF-002", "topic": "low-confidence", "requirement": "Confidence below 0.7 requires review and defaults to private."},
+    {"id": "NAME-001", "topic": "canonical-naming", "requirement": "Use cleaned display labels and stable lowercase kebab-case IDs; match names using Unicode-normalized, punctuation-insensitive, case-insensitive canonical text."},
+    {"id": "DEDUP-001", "topic": "deduplication", "requirement": "Surface canonical matches as duplicates or updates, merge provenance only after approval, and never discard either source."},
+    {"id": "CONFLICT-001", "topic": "contradiction", "requirement": "Retain the old and proposed wording, surface the conflict, identify authority differences, and require human review."},
+    {"id": "SUPER-001", "topic": "supersession", "requirement": "Mark proposed supersession explicitly; retain the superseded wording, source, timestamps, and review history."},
+    {"id": "PRIV-001", "topic": "private-public", "requirement": "Every import is private; only explicitly approved-public proposals may be published."},
+    {"id": "SENS-001", "topic": "sensitive-information", "requirement": "Sensitive information defaults to private and public approval requires an additional explicit sensitive-content override."},
+    {"id": "REVIEW-001", "topic": "human-review", "requirement": "No proposal changes a graph until a human selects an approval command."},
+    {"id": "REVIEW-002", "topic": "public-approval", "requirement": "Publication accepts only approved-public proposals and strips private source locators, filenames, and content hashes."},
+    {"id": "APPEND-001", "topic": "append-only", "requirement": "Never automatically delete a source, node, edge, provenance reference, or prior approved wording."},
+    {"id": "AUDIT-001", "topic": "audit", "requirement": "Log action, timestamp, harness version, proposal IDs, and affected rule IDs without copying raw source text."},
+    {"id": "RECOVERY-001", "topic": "failure-recovery", "requirement": "Validate append-only and referential integrity before atomic replacement; on failure retain the last valid graph and retry from unchanged private source/staging."},
+    {"id": "WORDING-001", "topic": "exact-wording", "requirement": "When exact wording is explicitly required and approved, preserve it verbatim in the proposal and never normalize or paraphrase it during publication."}
+  ]
+}

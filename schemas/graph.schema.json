@@ -57,7 +57,7 @@
     },
     "statementType": {
       "type": "string",
-      "enum": ["fact", "decision", "recommendation", "assumption", "unresolved-question", "policy"],
+      "enum": ["fact", "decision", "preference", "recommendation", "assumption", "unresolved-question", "policy", "superseded"],
       "description": "Epistemic class of a node or relationship assertion."
     },
     "timestamps": {
@@ -131,6 +131,25 @@
             "description": { "type": "string", "minLength": 1 },
             "entityType": { "$ref": "#/$defs/entityType" },
             "statementType": { "$ref": "#/$defs/statementType" },
+            "exactWording": { "type": "boolean", "description": "True when the approved description must remain verbatim." },
+            "claimHistory": {
+              "type": "array",
+              "description": "Append-only approved claim versions retained when authority review or supersession changes canonical wording.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["description", "statementType", "sourceIds", "observedAt", "confidence", "authorityLevel", "status"],
+                "properties": {
+                  "description": { "type": "string" },
+                  "statementType": { "$ref": "#/$defs/statementType" },
+                  "sourceIds": { "type": "array", "items": { "$ref": "#/$defs/identifier" }, "uniqueItems": true },
+                  "observedAt": { "$ref": "#/$defs/timestamp" },
+                  "confidence": { "$ref": "#/$defs/confidence" },
+                  "authorityLevel": { "$ref": "#/$defs/authorityLevel" },
+                  "status": { "enum": ["current", "retained", "alternate", "superseded"] }
+                }
+              }
+            },
             "sourceIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/identifier" } },
             "timestamps": { "$ref": "#/$defs/timestamps" },
             "confidence": { "$ref": "#/$defs/confidence" },

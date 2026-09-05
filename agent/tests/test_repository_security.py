@@ -63,6 +63,8 @@ class RepositorySecurityTests(unittest.TestCase):
         self.assertNotIn("data/staging", workflow)
         self.assertNotIn("agent/", workflow)
         self.assertNotIn("logs/", workflow)
+        self.assertNotIn("agent-harness.schema.json", workflow)
+        self.assertNotIn("intake-proposal.schema.json", workflow)
 
 
 if __name__ == "__main__":

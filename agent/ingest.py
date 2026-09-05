@@ -24,7 +24,7 @@ ENTITY_TYPES = {
 }
 STATEMENT_TYPES = {
     "fact", "decision", "recommendation", "assumption",
-    "unresolved-question", "policy",
+    "unresolved-question", "policy", "preference", "superseded",
 }
 TAG_TYPES = {
     "entity": ("entity", "fact"),
@@ -39,13 +39,15 @@ TAG_TYPES = {
     "fact": ("historical-note", "fact"),
     "recommendation": ("historical-note", "recommendation"),
     "assumption": ("historical-note", "assumption"),
+    "preference": ("historical-note", "preference"),
+    "superseded": ("historical-note", "superseded"),
     "question": ("open-issue", "unresolved-question"),
 }
 AUTHORITY_RANK = {"unknown": 0, "tertiary": 1, "secondary": 2, "primary": 3, "owner": 4}
 AUTHORITY_CONFIDENCE = {"unknown": 0.5, "tertiary": 0.6, "secondary": 0.75, "primary": 0.9, "owner": 1.0}
 
 TAG_PATTERN = re.compile(
-    r"^(entity|project|decision|person|system|policy|event|open[ -]issue|historical[ -]note|fact|recommendation|assumption|question)\s*:\s*(.+)$",
+    r"^(entity|project|decision|person|system|policy|event|open[ -]issue|historical[ -]note|fact|recommendation|assumption|preference|superseded|question)\s*:\s*(.+)$",
     re.IGNORECASE,
 )
 RELATIONSHIP_PATTERN = re.compile(r"^relationship\s*:\s*(.+?)\s*\|\s*([^|]+?)\s*\|\s*(.+)$", re.IGNORECASE)
@@ -112,6 +114,7 @@ class CandidateNode:
     entity_type: str
     statement_type: str
     confidence: float
+    preserve_exact_wording: bool = False
 
 
 @dataclass
@@ -133,7 +136,7 @@ class ExtractedDocument:
 
     def add_node(self, candidate: CandidateNode) -> None:
         candidate.label = clean_label(candidate.label)
-        candidate.description = clean_description(candidate.description)
+        candidate.description = candidate.description.strip() if candidate.preserve_exact_wording else clean_description(candidate.description)
         if not candidate.label or len(candidate.label) < 2:
             return
         if candidate.entity_type not in ENTITY_TYPES:
@@ -152,6 +155,7 @@ class ExtractedDocument:
         current.confidence = max(current.confidence, candidate.confidence)
         if len(candidate.description) > len(current.description):
             current.description = candidate.description
+            current.preserve_exact_wording = candidate.preserve_exact_wording
 
     def add_edge(self, candidate: CandidateEdge) -> None:
         source = clean_label(candidate.source_label)
@@ -253,6 +257,10 @@ def parse_metadata(text: str) -> tuple[dict[str, str], str]:
 
 def classify_statement(text: str) -> tuple[str, str, float]:
     lowered = text.casefold()
+    if re.search(r"\b(?:superseded|replaced by|no longer current|obsolete)\b", lowered):
+        return "historical-note", "superseded", 0.82
+    if re.search(r"\b(?:i prefer|we prefer|preference is|preferred option)\b", lowered):
+        return "historical-note", "preference", 0.8
     if text.rstrip().endswith("?") or re.search(r"\b(?:open question|unresolved|unknown|tbd)\b", lowered):
         return "open-issue", "unresolved-question", 0.82
     if re.search(r"\b(?:must|shall|required|prohibited|may not|policy)\b", lowered):
@@ -265,7 +273,7 @@ def classify_statement(text: str) -> tuple[str, str, float]:
         return "historical-note", "assumption", 0.68
     if re.search(r"\b(?:on \d{4}-\d{2}-\d{2}|on [A-Z][a-z]+ \d{1,2},? \d{4})\b", text):
         return "event", "fact", 0.76
-    return "historical-note", "fact", 0.7
+    return "historical-note", "assumption", 0.6
 
 
 def category_for(label: str, entity_type: str, available: set[str]) -> str:
@@ -412,12 +420,22 @@ def structured_json(document: ExtractedDocument, value: Any) -> None:
                 statement_type = default_statements.get(entity_type, "fact")
             elif isinstance(item, dict):
                 label = str(item.get("label") or item.get("name") or item.get("title") or "")
-                description = str(item.get("description") or item.get("text") or label)
+                preserve_exact_wording = bool(item.get("preserveExactWording") or item.get("exactWording"))
+                description = str(item.get("approvedWording") or item.get("description") or item.get("text") or label)
                 confidence = float(item.get("confidence", 0.92))
                 statement_type = str(item.get("statementType") or item.get("statement_type") or default_statements.get(entity_type, "fact"))
             else:
                 continue
-            document.add_node(CandidateNode(label, description, entity_type, statement_type, confidence))
+            if not isinstance(item, dict):
+                preserve_exact_wording = False
+            document.add_node(CandidateNode(label, description, entity_type, statement_type, confidence, preserve_exact_wording))
+            if isinstance(item, dict):
+                owner = (item.get("decisionOwner") or item.get("decision_owner") or item.get("owner")) if entity_type == "decision" else item.get("owner")
+                if owner:
+                    owner_label = str(owner)
+                    relationship = "decision-owner" if entity_type == "decision" else "owner-of"
+                    document.add_node(CandidateNode(owner_label, f"Explicit {relationship} for {label}.", "person", "fact", confidence))
+                    document.add_edge(CandidateEdge(owner_label, label, relationship, confidence, True, statement_type))
     relationships = value.get("relationships", value.get("edges", []))
     if isinstance(relationships, list):
         for item in relationships:
@@ -559,6 +577,8 @@ def merge_document(graph: dict[str, Any], document: ExtractedDocument, source: d
                 "timestamps": {"createdAt": run_at, "updatedAt": run_at, "firstSeen": observed_at, "lastSeen": observed_at},
                 "confidence": candidate_confidence, "authorityLevel": authority,
             }
+            if candidate.preserve_exact_wording:
+                node["exactWording"] = True
             graph["nodes"].append(node)
             node_by_id[node_id] = node
             node_by_label[key] = node
@@ -585,6 +605,8 @@ def merge_document(graph: dict[str, Any], document: ExtractedDocument, source: d
         timestamps["lastSeen"] = later_timestamp(timestamps.get("lastSeen", updated_at), observed_at)
         existing.setdefault("entityType", candidate.entity_type)
         existing.setdefault("statementType", candidate.statement_type)
+        if candidate.preserve_exact_wording:
+            existing.setdefault("exactWording", True)
         existing["confidence"] = max(float(existing.get("confidence", 0)), candidate_confidence)
         if AUTHORITY_RANK[authority] > AUTHORITY_RANK.get(existing.get("authorityLevel", "unknown"), 0):
             existing["authorityLevel"] = authority
@@ -701,6 +723,19 @@ def assert_append_only(original: dict[str, Any], merged: dict[str, Any]) -> None
         missing = {item["id"] for item in original.get(collection, [])} - {item["id"] for item in merged.get(collection, [])}
         if missing:
             raise RuntimeError(f"Append-only invariant failed for {collection}: {sorted(missing)}")
+        merged_by_id = {item["id"]: item for item in merged.get(collection, [])}
+        for prior in original.get(collection, []):
+            current = merged_by_id[prior["id"]]
+            removed_sources = set(prior.get("sourceIds", [])) - set(current.get("sourceIds", []))
+            if removed_sources:
+                raise RuntimeError(f"Append-only invariant removed provenance from {prior['id']}: {sorted(removed_sources)}")
+            removed_claims = [claim for claim in prior.get("claimHistory", []) if claim not in current.get("claimHistory", [])]
+            if removed_claims:
+                raise RuntimeError(f"Append-only invariant removed claim history from {prior['id']}")
+            if collection == "nodes" and prior.get("description") != current.get("description"):
+                preserved = any(claim.get("description") == prior.get("description") for claim in current.get("claimHistory", []))
+                if not preserved:
+                    raise RuntimeError(f"Append-only invariant changed wording without history on {prior['id']}")
 
 
 def validate_graph(graph: dict[str, Any]) -> None:
@@ -735,6 +770,17 @@ def validate_graph(graph: dict[str, Any]) -> None:
             raise ValueError(f"Invalid entity type on node {node['id']}")
         if node.get("statementType") is not None and node["statementType"] not in STATEMENT_TYPES:
             raise ValueError(f"Invalid statement type on node {node['id']}")
+        for claim in node.get("claimHistory", []):
+            if not isinstance(claim, dict) or not set(claim.get("sourceIds", [])) <= identifiers["sources"]:
+                raise ValueError(f"Invalid claim-history provenance on node {node['id']}")
+            if claim.get("statementType") not in STATEMENT_TYPES:
+                raise ValueError(f"Invalid claim-history statement type on node {node['id']}")
+            if claim.get("authorityLevel") not in AUTHORITY_LEVELS:
+                raise ValueError(f"Invalid claim-history authority on node {node['id']}")
+            confidence = claim.get("confidence")
+            if not isinstance(confidence, (int, float)) or isinstance(confidence, bool) or not 0 <= confidence <= 1:
+                raise ValueError(f"Invalid claim-history confidence on node {node['id']}")
+            parse_timestamp(claim.get("observedAt", ""))
         _validate_record_timestamps(node)
 
     for edge in graph["edges"]:

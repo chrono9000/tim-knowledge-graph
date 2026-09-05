@@ -17,3 +17,5 @@ Authority levels are:
 Top-level `sources` hold the reusable source details. A future agent may add records only when their `sourceIds` resolve to those entries. JSON Schema validates shape and values; repository validation must also enforce unique IDs and valid category, source, and edge endpoint references.
 
 [`intake-proposal.schema.json`](intake-proposal.schema.json) documents the private staging format, including review status, proposed and previous records, provenance, timestamps, confidence, and authority. It is repository documentation only and is deliberately excluded from the public Pages artifact.
+
+[`agent-harness.schema.json`](agent-harness.schema.json) documents the machine-readable FEOS operating harness in [`../agent/harness.json`](../agent/harness.json). Both the private proposal schema and harness schema are excluded from Pages; only `graph.schema.json` is deployed.

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chrono9000.github.io/tim-knowledge-graph/schemas/agent-harness.schema.json",
+  "title": "Knowledge graph operating harness",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "effectiveAt", "purpose", "scope", "boundaries", "statementTypes", "authority", "confidence", "classification", "rules"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "id": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "effectiveAt": {"type": "string", "format": "date-time"},
+    "purpose": {"type": "string", "minLength": 1},
+    "scope": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "boundaries": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "statementTypes": {"type": "object", "minProperties": 8, "additionalProperties": {"type": "string"}},
+    "authority": {
+      "type": "object",
+      "required": ["model", "tiers", "sameTierPriority", "conflictRule"],
+      "properties": {
+        "model": {"const": "FEOS"},
+        "tiers": {"type": "array", "minItems": 5, "items": {"type": "object", "required": ["id", "rank", "confidenceCap", "description"]}},
+        "sameTierPriority": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "conflictRule": {"type": "string"}
+      }
+    },
+    "confidence": {"type": "object", "required": ["meaning", "reviewBelow", "rules"]},
+    "classification": {"type": "object", "required": ["default", "publicRequires", "sensitiveSignals", "sensitiveDefault"]},
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "topic", "requirement"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[A-Z]+-[0-9]{3}$"},
+          "topic": {"type": "string", "minLength": 1},
+          "requirement": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}
