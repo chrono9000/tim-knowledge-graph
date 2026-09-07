@@ -697,6 +697,9 @@ def load_manifest(path: Path) -> dict[str, Any]:
 
 
 def atomic_json_write(path: Path, value: Any) -> None:
+    from .safety import queue_write
+    if queue_write(path, value):
+        return
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary_name: str | None = None
     try:

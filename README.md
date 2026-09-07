@@ -1,5 +1,7 @@
 # Tim's Knowledge Graph
 
+Step 6 adds an inactive-by-default [daily private update workflow](agent/DAILY_WORKFLOW.md) for ordinary conversations, with [source-access findings and AI activation requirements](agent/SOURCE_AND_AI_DESIGN.md). No daily task or external AI service is activated.
+
 A static, interactive public knowledge graph with a separate, controlled private intake workflow. The visual experience remains dependency-free and deploys directly to GitHub Pages.
 
 ## Explore

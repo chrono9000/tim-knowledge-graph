@@ -93,6 +93,9 @@ class IntakeWorkflowTests(unittest.TestCase):
     def test_public_approval_requires_publish_and_sanitizes_source(self) -> None:
         before = self.public.read_bytes()
         imported = import_export(self.export(project="Project Helios"), self.config)
+        with self.assertRaises(ValueError):
+            approve(self.config, 'public', batch_id=imported.batch_id)
+        approve(self.config, 'private', batch_id=imported.batch_id)
         approve(self.config, "public", batch_id=imported.batch_id)
         self.assertEqual(self.public.read_bytes(), before)
 
@@ -198,6 +201,7 @@ class IntakeWorkflowTests(unittest.TestCase):
         self.assertGreater(json.loads(output.getvalue())["proposalCount"], 0)
 
         with redirect_stdout(io.StringIO()):
+            self.assertEqual(main([*common, "approve-private", "--batch", batch_id]), 0)
             self.assertEqual(main([*common, "approve-public", "--batch", batch_id]), 0)
             self.assertEqual(main([*common, "publish"]), 0)
 

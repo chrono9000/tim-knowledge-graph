@@ -117,10 +117,11 @@ class OperatingHarnessTests(unittest.TestCase):
         self.assertEqual(proposal["policyDecision"]["classification"], "private")
         self.assertFalse(proposal["policyDecision"]["publicEligible"])
         self.assertIn("SENS-001", proposal["policyDecision"]["ruleIds"])
+        approve(self.config, 'private', batch_id=imported.batch_id)
         with self.assertRaisesRegex(ValueError, "--allow-sensitive"):
             approve(self.config, "public", batch_id=imported.batch_id)
         self.assertEqual(self.public.read_bytes(), before)
-        self.assertFalse(self.private.exists())
+        self.assertTrue(self.private.exists())
 
     def test_low_confidence_requires_review_and_unapproved_never_publishes(self) -> None:
         before = self.public.read_bytes()

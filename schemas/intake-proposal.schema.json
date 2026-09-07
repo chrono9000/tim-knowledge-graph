@@ -92,6 +92,19 @@
           "additionalProperties": false
         },
         "source": { "type": "object" },
+        "conversation": {
+          "type": "object",
+          "required": ["id", "project", "revision", "provider", "providerVersion", "branchUncertain"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1 },
+            "project": { "type": "array", "items": { "type": "string" } },
+            "revision": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "provider": { "type": "string" },
+            "providerVersion": { "type": "string" },
+            "branchUncertain": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        },
         "proposals": { "type": "array", "items": { "$ref": "#/$defs/proposal" } }
       },
       "additionalProperties": false

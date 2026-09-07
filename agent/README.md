@@ -8,6 +8,8 @@ Python 3.10 or newer is required. The package uses only the standard library and
 
 For a real ChatGPT account export, follow [`CHATGPT_EXPORT_GUIDE.md`](CHATGPT_EXPORT_GUIDE.md), not the legacy generic `import` command. Read and approve the [`PRIVATE_HOSTING.md`](PRIVATE_HOSTING.md) design before staging real material.
 
+For Step 6 ordinary-language extraction and recurring local processing, use the [daily workflow guide](DAILY_WORKFLOW.md). The legacy tagged and generic commands below remain available. Public approval now requires prior private approval.
+
 ## Storage boundary
 
 - `data/graph.json` is the public graph consumed by GitHub Pages.

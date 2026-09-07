@@ -12,6 +12,7 @@ from typing import Any
 
 from .ingest import ExtractedDocument, atomic_json_write, conversation_messages, extract_text, iso_timestamp, parse_timestamp
 from .intake import IntakeConfig, WorkflowResult, import_export, load_staging
+from .safety import transactional
 
 
 MAX_ARCHIVE_BYTES = 512 * 1024 * 1024
@@ -52,6 +53,7 @@ def access_approval_path(config: IntakeConfig) -> Path:
     return config.private_graph_path.parent / "access-approval.json"
 
 
+@transactional
 def approve_access_design(config: IntakeConfig, mode: str) -> dict[str, Any]:
     if mode not in ACCESS_MODES:
         raise ValueError(f"Unsupported private-access mode: {mode}")

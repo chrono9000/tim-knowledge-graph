@@ -29,7 +29,14 @@ def make_server(config: IntakeConfig, host: str = "127.0.0.1", port: int = 8765)
             route = urlsplit(self.path).path
             if route == "/data/graph.json":
                 import json
-                body = json.dumps(load_private_master(config), indent=2, ensure_ascii=False).encode("utf-8") + b"\n"
+                from .safety import locked, assert_readable
+                try:
+                    with locked(config):
+                        assert_readable(config)
+                        body = json.dumps(load_private_master(config), indent=2, ensure_ascii=False).encode("utf-8") + b"\n"
+                except (OSError, RuntimeError, ValueError):
+                    self.send_error(503, 'Private workflow busy or recovery required')
+                    return
                 content_type = "application/json"
             elif route in assets:
                 body = assets[route].read_bytes()

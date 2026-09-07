@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from .harness import affected_rule_ids, evaluate_proposal, load_harness
+from .safety import transactional, queue_event, locked
 from .ingest import (
     AUTHORITY_CONFIDENCE,
     AUTHORITY_LEVELS,
@@ -47,7 +48,8 @@ MAX_ZIP_BYTES = 25 * 1024 * 1024
 LOW_CONFIDENCE = 0.7
 SENSITIVE_PATTERN = re.compile(
     r"(?ix)(?:\b\d{3}-\d{2}-\d{4}\b|\b(?:password|secret|api[_ -]?key|access[_ -]?token)\b|"
-    r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|(?:\+?1[-. ]?)?\(?\d{3}\)?[-. ]?\d{3}[-. ]?\d{4})"
+    r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|(?:\+?1[-. ]?)?\(?\d{3}\)?[-. ]?\d{3}[-. ]?\d{4}|"
+    r"\b(?:client|employee|family|health|medical|diagnosis|salary|compensation|confidential|private|payroll)\b)"
 )
 NEGATION_PATTERN = re.compile(r"\b(?:not|never|no longer|isn't|wasn't|won't|cannot|can't)\b", re.IGNORECASE)
 SUPERSESSION_PATTERN = re.compile(r"\b(?:superseded|supersedes|replaced by|replaces|no longer current|obsolete)\b", re.IGNORECASE)
@@ -274,6 +276,7 @@ def _proposal(batch_id: str, kind: str, action: str, record: dict[str, Any], sou
     }
 
 
+@transactional
 def import_export(
     path: Path,
     config: IntakeConfig,
@@ -381,7 +384,9 @@ def preview(config: IntakeConfig, statuses: Iterable[str] | None = None) -> dict
 def review_list(config: IntakeConfig, statuses: Iterable[str] | None = None) -> dict[str, Any]:
     value = preview(config, statuses or ("pending", "needs-review", "approved-private"))
     items = []
-    for number, proposal in enumerate(value["proposals"], 1):
+    all_ids = [p['id'] for b in load_staging(config.staging_path)['batches'] for p in b['proposals']]
+    for proposal in value["proposals"]:
+        number = all_ids.index(proposal['id']) + 1
         record = proposal["record"]
         if proposal["recordType"] == "source":
             label = record.get("title", "Private source")
@@ -398,6 +403,11 @@ def review_list(config: IntakeConfig, statuses: Iterable[str] | None = None) -> 
             "authorityLevel": proposal["provenance"]["authorityLevel"],
             "reviewReasons": proposal.get("reviewReasons", []),
             "ruleIds": proposal.get("policyDecision", {}).get("ruleIds", []),
+            "description": (proposal.get('proposedRecord') or record).get('description', ''),
+            "statementType": proposal.get('policyDecision', {}).get('statementType'),
+            "evidence": proposal.get('extractionEvidence', []),
+            "authorityPrecedence": proposal.get('policyDecision', {}).get('authorityPrecedence'),
+            "relatedClaims": proposal.get('relatedClaims', []),
         })
     return {"proposalCount": len(items), "items": items}
 
@@ -462,11 +472,20 @@ def _apply_record(graph: dict[str, Any], collection: str, record: dict[str, Any]
     if existing is None:
         graph[collection].append(copy.deepcopy(record))
     elif collection != "sources":
-        _merge_provenance(existing, record)
         proposed = proposal.get("proposedRecord") if proposal else None
         previous = proposal.get("previousRecord") if proposal else None
+        if proposed and previous:
+            # Staging can be older than a later approved higher-authority update.
+            previous = copy.deepcopy(existing)
+            incoming_rank = AUTHORITY_RANK.get(proposal.get('provenance', {}).get('authorityLevel', 'unknown'), 0)
+            current_rank = AUTHORITY_RANK.get(existing.get('authorityLevel', 'unknown'), 0)
+            precedence = 'retain-existing-unless-review-overrides' if incoming_rank < current_rank else ('same-tier-review' if incoming_rank == current_rank else 'prefer-proposed-after-review')
+            if incoming_rank == current_rank and existing.get('exactWording') and not proposed.get('exactWording'):
+                precedence = 'retain-existing-unless-review-overrides'
+        else:
+            precedence = None
+        _merge_provenance(existing, record)
         if collection == "nodes" and proposed and previous:
-            precedence = proposal.get("policyDecision", {}).get("authorityPrecedence")
             use_proposed = precedence in {"prefer-proposed-after-review", "same-tier-review"}
             previous_status = "superseded" if use_proposed else "retained"
             proposed_status = "current" if use_proposed else "alternate"
@@ -486,11 +505,12 @@ def _apply_record(graph: dict[str, Any], collection: str, record: dict[str, Any]
                     existing["exactWording"] = True
 
 
+@transactional
 def approve(config: IntakeConfig, visibility: str, proposal_ids: Iterable[str] | None = None, batch_id: str | None = None, select_all: bool = False, allow_sensitive: bool = False) -> WorkflowResult:
     if visibility not in {"private", "public"}:
         raise ValueError("Approval visibility must be private or public")
     staging = load_staging(config.staging_path)
-    allowed = {"pending", "needs-review", "approved-private"} if visibility == "public" else {"pending", "needs-review"}
+    allowed = {"approved-private"} if visibility == "public" else {"pending", "needs-review"}
     selected = _select(staging, proposal_ids, batch_id, select_all, allowed)
     if visibility == "public" and not allow_sensitive:
         sensitive = [proposal["id"] for _, proposal in selected if not proposal.get("policyDecision", {}).get("publicEligible", True)]
@@ -527,6 +547,7 @@ def approve(config: IntakeConfig, visibility: str, proposal_ids: Iterable[str] |
     return WorkflowResult(f"approve-{visibility}", proposal_ids=touched, proposals_changed=len(touched), graph_changed=master != master_before)
 
 
+@transactional
 def reject(config: IntakeConfig, proposal_ids: Iterable[str] | None = None, batch_id: str | None = None, select_all: bool = False) -> WorkflowResult:
     staging = load_staging(config.staging_path)
     selected = _select(staging, proposal_ids, batch_id, select_all, {"pending", "needs-review"})
@@ -554,6 +575,7 @@ def _public_source(source: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+@transactional
 def publish(config: IntakeConfig) -> WorkflowResult:
     staging = load_staging(config.staging_path)
     original = json.loads(config.public_graph_path.read_text(encoding="utf-8"))
@@ -568,14 +590,29 @@ def publish(config: IntakeConfig) -> WorkflowResult:
         _apply_record(graph, "sources", _public_source(source))
     ordered = sorted(publishable, key=lambda item: 1 if "source" in item[1]["record"] and "target" in item[1]["record"] else 0)
     published: list[str] = []
-    for _, proposal in ordered:
+    for batch, proposal in ordered:
         if proposal["kind"] == "source":
             proposal["publishedAt"] = now
             published.append(proposal["id"])
             continue
-        record = proposal["record"]
+        record = copy.deepcopy(proposal['record'])
+        # A separately approved public claim never carries merged private history.
+        record['sourceIds'] = [batch['source']['id']]
+        record.pop('claimHistory', None)
+        record['confidence'] = proposal['provenance']['confidence']
+        record['authorityLevel'] = proposal['provenance']['authorityLevel']
+        record['timestamps'] = {'createdAt': proposal['provenance']['firstSeen'], 'updatedAt': proposal['provenance']['lastSeen'],
+                                'firstSeen': proposal['provenance']['firstSeen'], 'lastSeen': proposal['provenance']['lastSeen']}
+        proposed = proposal.get('proposedRecord')
+        if proposed:
+            for key in ('description', 'statementType', 'exactWording'):
+                if key in proposed:
+                    record[key] = proposed[key]
+        public_proposal = copy.deepcopy(proposal)
+        collection = 'edges' if 'source' in record and 'target' in record else 'nodes'
+        public_proposal['previousRecord'] = next((r for r in graph[collection] if r['id'] == record['id']), None)
         collection = "edges" if "source" in record and "target" in record else "nodes"
-        _apply_record(graph, collection, record, proposal)
+        _apply_record(graph, collection, record, public_proposal)
         proposal["publishedAt"] = now
         published.append(proposal["id"])
     if graph != original:
@@ -589,6 +626,9 @@ def publish(config: IntakeConfig) -> WorkflowResult:
 
 
 def _write_log(config: IntakeConfig, action: str, details: dict[str, Any]) -> None:
+    harness = load_harness(config.harness_path)
+    if queue_event(action, {'harnessId': harness['id'], 'harnessVersion': harness['version'], **details}):
+        return
     now = config.clock()
     timestamp = iso_timestamp(now)
     run_id = now.astimezone(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
@@ -640,10 +680,28 @@ def build_parser() -> argparse.ArgumentParser:
     viewer = subparsers.add_parser("view-private", help="Open the private master graph on this computer only.")
     viewer.add_argument("--port", type=int, default=8765)
     viewer.add_argument("--no-open", action="store_true")
+    for command in ('run-daily', 'stop', 'resume', 'recover', 'rollback-list', 'schedule-plan'):
+        subparsers.add_parser(command)
+    rollback_parser = subparsers.add_parser('rollback-private')
+    rollback_parser.add_argument('transaction_id')
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Hold a single lock through number resolution and mutation.
+    arguments = build_parser().parse_args(argv)
+    config = IntakeConfig(arguments.public_graph.resolve(), arguments.private_graph.resolve(), arguments.staging.resolve(), arguments.log_dir.resolve(), harness_path=default_config().harness_path)
+    if arguments.command in {'view-private', 'stop', 'dry-run-chatgpt', 'validate-chatgpt', 'access-plan', 'schedule-plan'}:
+        return _main(argv)
+    try:
+        with locked(config):
+            return _main(argv)
+    except (OSError, ValueError, RuntimeError) as error:
+        print(json.dumps({'status': 'error', 'error': str(error)}))
+        return 1
+
+
+def _main(argv: list[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     config = IntakeConfig(arguments.public_graph.resolve(), arguments.private_graph.resolve(), arguments.staging.resolve(), arguments.log_dir.resolve(), harness_path=default_config().harness_path)
     try:
@@ -677,6 +735,24 @@ def main(argv: list[str] | None = None) -> int:
         elif arguments.command == "approve-access":
             from .chatgpt_export import approve_access_design
             result = approve_access_design(config, arguments.mode)
+        elif arguments.command == 'run-daily':
+            from .recurring import run_daily
+            result = run_daily(config)
+        elif arguments.command in {'stop', 'resume'}:
+            from .recurring import set_stopped
+            result = set_stopped(config, arguments.command == 'stop')
+        elif arguments.command == 'recover':
+            from .safety import recover
+            result = recover(config)
+        elif arguments.command == 'rollback-list':
+            from .safety import rollback_choices
+            result = rollback_choices(config)
+        elif arguments.command == 'rollback-private':
+            from .safety import rollback
+            result = rollback(config, arguments.transaction_id)
+        elif arguments.command == 'schedule-plan':
+            result = {'active': False, 'recommended': 'Daily at 09:00 America/New_York on Tim\u2019s computer',
+                      'command': 'python -m agent run-daily', 'requires': 'Tim approval of design, time, computer and local execution account'}
         else:
             from .private_view import serve
             serve(config, port=arguments.port, open_browser=not arguments.no_open)
@@ -684,5 +760,18 @@ def main(argv: list[str] | None = None) -> int:
     except (OSError, ValueError, RuntimeError, json.JSONDecodeError, zipfile.BadZipFile) as error:
         print(json.dumps({"status": "error", "error": str(error)}, indent=2))
         return 1
-    print(json.dumps({"status": "ok", **result}, indent=2))
-    return 0
+    if arguments.command == 'review':
+        for item in result['items']:
+            print(f"{item['number']}. [{item['status']}] {item['label']}")
+            print(f"   {item['description']}")
+            print(f"   {item['statementType']} | {item['authorityLevel']} | confidence {item['confidence']} | {item['authorityPrecedence']}")
+            print(f"   Review: {', '.join(item['reviewReasons']) or 'manual approval required'}")
+            for evidence in item['evidence']:
+                print(f"   Source {evidence['message_id']} ({evidence['role']}, {evidence['sourceTimestamp']}): {evidence['quote']}")
+                print(f"   Category: {evidence['category']}; epistemic: {evidence['epistemic']}; owner: {evidence['owner'] or 'unresolved'}")
+            for claim in item['relatedClaims']:
+                print(f"   Related claim ({claim.get('authorityLevel', 'unknown')}): {claim.get('description', '')}")
+        print(f"{result['proposalCount']} reviewable items. Numbers remain stable after approvals and rejections.")
+    else:
+        print(json.dumps({"status": "error" if result.get('failures') else "ok", **result}, indent=2))
+    return 1 if result.get('failures') else 0

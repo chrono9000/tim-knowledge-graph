@@ -1,5 +1,7 @@
 # Safe ChatGPT export workflow
 
+This is the Step 5 tagged-statement workflow. For Step 6 ordinary prose and incremental daily scans, follow [Daily private knowledge updates](DAILY_WORKFLOW.md). Its ZIP format limits remain the same; extracted numbered conversation JSON files are accepted individually by the daily runner.
+
 This is the beginner-friendly path for processing a real ChatGPT export. The private master graph is the source of truth. GitHub Pages is a separate, optional public view and is **not** a private hosting service.
 
 Do not process a real export until you have chosen and explicitly approved a private viewing mode. The recommended first choice is `local-only`: the private graph stays on Tim's computer and the viewer listens only on `127.0.0.1`. For named people who need remote access, use Tailscale Serve with restrictive tailnet access rules. Cloudflare Tunnel plus Access is a browser-friendly alternative but adds DNS, identity-provider, and policy configuration. Never use Tailscale Funnel, a public static host, or unprotected GitHub Pages for the private graph.
