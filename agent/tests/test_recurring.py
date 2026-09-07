@@ -156,7 +156,7 @@ class RecurringTests(unittest.TestCase):
         original = safety._write
         def crash(path, value):
             original(path, value)
-            if path == self.config.staging_path:
+            if path.resolve() == self.config.staging_path.resolve():
                 raise KeyboardInterrupt('synthetic interruption')
         with patch('agent.safety._write', side_effect=crash), self.assertRaises(KeyboardInterrupt):
             run_daily(self.config)
@@ -171,7 +171,7 @@ class RecurringTests(unittest.TestCase):
         original = safety._write
         def crash(path, value):
             original(path, value)
-            if path == self.config.private_graph_path:
+            if path.resolve() == self.config.private_graph_path.resolve():
                 raise KeyboardInterrupt()
         with patch('agent.safety._write', side_effect=crash), self.assertRaises(KeyboardInterrupt):
             approve(self.config, 'private', select_all=True)
