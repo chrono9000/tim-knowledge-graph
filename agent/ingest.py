@@ -304,7 +304,7 @@ def named_entities(sentence: str) -> list[tuple[str, str]]:
     return list(found.values())
 
 
-def extract_text(text: str, *, base_confidence: float = 1.0) -> ExtractedDocument:
+def extract_text(text: str, *, base_confidence: float = 1.0, allow_unstructured: bool = True) -> ExtractedDocument:
     document = ExtractedDocument()
     metadata, body = parse_metadata(text)
     document.metadata.update(metadata)
@@ -337,7 +337,8 @@ def extract_text(text: str, *, base_confidence: float = 1.0) -> ExtractedDocumen
             heading = clean_label(stripped)
             document.add_node(CandidateNode(heading, f"Section heading: {heading}", "entity", "fact", 0.72 * base_confidence))
             continue
-        unstructured.append(line)
+        if allow_unstructured:
+            unstructured.append(line)
 
     for line in unstructured:
         for sentence in re.split(r"(?<=[.!?])\s+", line):

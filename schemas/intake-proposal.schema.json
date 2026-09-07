@@ -35,7 +35,8 @@
       "required": ["id", "kind", "recordType", "targetId", "status", "reviewReasons", "proposedRecord", "provenance", "policyDecision"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
-        "kind": { "enum": ["add", "update", "duplicate", "contradiction", "supersession"] },
+        "kind": { "enum": ["source", "node", "edge", "duplicate", "contradiction", "supersession"] },
+        "action": { "enum": ["add", "update"] },
         "recordType": { "enum": ["source", "node", "edge"] },
         "targetId": { "type": "string", "minLength": 1 },
         "status": { "enum": ["pending", "approved-private", "approved-public", "rejected", "needs-review"] },
@@ -75,6 +76,21 @@
         "sourceTimestamp": { "$ref": "#/$defs/timestamp" },
         "importedAt": { "$ref": "#/$defs/timestamp" },
         "contentHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "exportFormat": { "const": "chatgpt-conversations-v1" },
+        "containerContentHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "selectionHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "selectedConversationIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "selection": {
+          "type": "object",
+          "properties": {
+            "conversations": { "type": "array", "items": { "type": "string" } },
+            "projects": { "type": "array", "items": { "type": "string" } },
+            "title": { "type": ["string", "null"] },
+            "fromDate": { "type": ["string", "null"], "format": "date" },
+            "toDate": { "type": ["string", "null"], "format": "date" }
+          },
+          "additionalProperties": false
+        },
         "source": { "type": "object" },
         "proposals": { "type": "array", "items": { "$ref": "#/$defs/proposal" } }
       },

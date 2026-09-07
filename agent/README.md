@@ -6,6 +6,8 @@ The operating contract is defined in human-readable form by [`HARNESS.md`](HARNE
 
 Python 3.10 or newer is required. The package uses only the standard library and makes no network requests or external AI API calls.
 
+For a real ChatGPT account export, follow [`CHATGPT_EXPORT_GUIDE.md`](CHATGPT_EXPORT_GUIDE.md), not the legacy generic `import` command. Read and approve the [`PRIVATE_HOSTING.md`](PRIVATE_HOSTING.md) design before staging real material.
+
 ## Storage boundary
 
 - `data/graph.json` is the public graph consumed by GitHub Pages.
@@ -33,6 +35,18 @@ Attachments, images, HTML exports, custom ChatGPT data layouts, and encrypted ar
 Run commands from the repository root:
 
 ```bash
+python -m agent access-plan
+python -m agent approve-access --mode local-only
+python -m agent validate-chatgpt data/raw/chatgpt-export.zip
+python -m agent dry-run-chatgpt data/raw/chatgpt-export.zip
+python -m agent stage-chatgpt data/raw/chatgpt-export.zip
+python -m agent review
+python -m agent approve-private --number 2
+python -m agent view-private
+python -m agent approve-public --number 2
+python -m agent publish
+
+# Generic synthetic/project intake remains available:
 python -m agent import /path/to/conversations.json
 python -m agent preview
 python -m agent preview --status needs-review
@@ -42,6 +56,8 @@ python -m agent approve-public PROPOSAL_ID --allow-sensitive
 python -m agent reject PROPOSAL_ID
 python -m agent publish
 ```
+
+The dedicated ChatGPT commands validate the official account-export structure, support conversation/project/title/date selection, ignore attachments, extract only explicitly tagged graph statements, and never retain complete message text. `dry-run-chatgpt` returns count-only results and makes no writes. `stage-chatgpt` is resumable and refuses to run until the private-access design has explicit local approval.
 
 Use `--all` only after reviewing the full queue. Global path overrides (`--public-graph`, `--private-graph`, `--staging`, and `--log-dir`) support isolated testing and private deployments. `--authority-tier` on import can explicitly set source authority.
 

@@ -23,12 +23,15 @@ class RepositorySecurityTests(unittest.TestCase):
             "data/raw/conversation-export.json",
             "data/processed/ingestion-manifest.json",
             "data/private/master-graph.json",
+            "data/private/access-approval.json",
             "data/staging/proposals.json",
+            "data/processed/chatgpt-processing-checkpoint.json",
             "logs/ingestion-20990101T000000Z.jsonl",
             "logs/intake-20990101T000000Z.jsonl",
             "agent/working-copy.tmp",
             "archive/chat_export_private.json",
             "archive/project-export-private.zip",
+            "archive/chatgpt-approval-review.json",
         )
         for path in private_paths:
             with self.subTest(path=path):
@@ -65,6 +68,7 @@ class RepositorySecurityTests(unittest.TestCase):
         self.assertNotIn("logs/", workflow)
         self.assertNotIn("agent-harness.schema.json", workflow)
         self.assertNotIn("intake-proposal.schema.json", workflow)
+        self.assertNotIn("private-access-approval.schema.json", workflow)
 
 
 if __name__ == "__main__":

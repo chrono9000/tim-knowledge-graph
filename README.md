@@ -38,6 +38,8 @@ private export -> import -> staging review -> private approval
 
 Import and preview never change a graph. Every accepted record first enters the ignored private master. Only proposals explicitly marked `approved-public` can be copied into `data/graph.json`, and publication strips raw filenames and content hashes from public provenance. See [`agent/README.md`](agent/README.md) for exact formats and commands.
 
+For a real ChatGPT account export, use the dedicated [safe export walkthrough](agent/CHATGPT_EXPORT_GUIDE.md). The recommended private view is the loopback-only local viewer; [private access options](agent/PRIVATE_HOSTING.md) cover controlled sharing. A real export cannot be staged until Tim explicitly records the chosen private-access design.
+
 The agent is governed by the documented [FEOS operating harness](agent/HARNESS.md). Its machine-readable companion assigns stable rule IDs to authority, provenance, confidence, contradiction, supersession, privacy, review, append-only, audit, recovery, inference, ownership, naming, and exact-wording requirements. Every staged proposal records the rules that affected it.
 
 When the page loads, `app.js` resolves `./data/graph.json` against the current document URL. This relative URL works both at a local server root and under the `/tim-knowledge-graph/` GitHub Pages project path.

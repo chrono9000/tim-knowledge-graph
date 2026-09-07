@@ -9,7 +9,7 @@ import json
 import re
 import zipfile
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -274,16 +274,26 @@ def _proposal(batch_id: str, kind: str, action: str, record: dict[str, Any], sou
     }
 
 
-def import_export(path: Path, config: IntakeConfig, authority_override: str = "auto") -> WorkflowResult:
+def import_export(
+    path: Path,
+    config: IntakeConfig,
+    authority_override: str = "auto",
+    *,
+    prepared: tuple[bytes, ExtractedDocument, str] | None = None,
+    identity_hash: str | None = None,
+    batch_metadata: dict[str, Any] | None = None,
+    dry_run: bool = False,
+) -> WorkflowResult:
     path = path.resolve()
     if not path.is_file() or path.is_symlink():
         raise ValueError("Export path must be a regular file")
-    raw, document, observed_at = _read_export(path)
-    digest = hashlib.sha256(raw).hexdigest()
+    raw, document, observed_at = prepared or _read_export(path)
+    source_digest = hashlib.sha256(raw).hexdigest()
+    digest = identity_hash or source_digest
     staging = load_staging(config.staging_path)
     existing_batch = next((batch for batch in staging["batches"] if batch.get("contentHash") == digest), None)
     if existing_batch:
-        return WorkflowResult("import", existing_batch["id"], details={"duplicateImport": True, "proposalCount": len(existing_batch["proposals"])})
+        return WorkflowResult("dry-run" if dry_run else "import", existing_batch["id"], details={"duplicateImport": True, "proposalCount": len(existing_batch["proposals"]), "batch": copy.deepcopy(existing_batch) if dry_run else None})
     now = iso_timestamp(config.clock())
     harness = load_harness(config.harness_path)
     master = load_private_master(config)
@@ -298,7 +308,7 @@ def import_export(path: Path, config: IntakeConfig, authority_override: str = "a
         "location": f"private-source:{private_source_id}",
         "filename": path.name,
         "sourceTimestamp": observed_at,
-        "contentHash": digest,
+        "contentHash": source_digest,
         "retrievedAt": now,
         "confidence": confidence,
         "authorityLevel": authority,
@@ -342,6 +352,10 @@ def import_export(path: Path, config: IntakeConfig, authority_override: str = "a
         "source": source,
         "proposals": proposals,
     }
+    if batch_metadata:
+        batch.update(copy.deepcopy(batch_metadata))
+    if dry_run:
+        return WorkflowResult("dry-run", batch_id, [item["id"] for item in proposals], details={"duplicateImport": False, "proposalCount": len(proposals), "batch": batch})
     staging["batches"].append(batch)
     atomic_json_write(config.staging_path, staging)
     _write_log(config, "import", {
@@ -362,6 +376,42 @@ def preview(config: IntakeConfig, statuses: Iterable[str] | None = None) -> dict
         for batch in staging["batches"] for proposal in batch["proposals"] if proposal["status"] in selected
     ]
     return {"proposalCount": len(proposals), "proposals": proposals}
+
+
+def review_list(config: IntakeConfig, statuses: Iterable[str] | None = None) -> dict[str, Any]:
+    value = preview(config, statuses or ("pending", "needs-review", "approved-private"))
+    items = []
+    for number, proposal in enumerate(value["proposals"], 1):
+        record = proposal["record"]
+        if proposal["recordType"] == "source":
+            label = record.get("title", "Private source")
+        else:
+            label = record.get("label") or f"{record.get('source', '?')} -> {record.get('target', '?')}"
+        items.append({
+            "number": number,
+            "proposalId": proposal["id"],
+            "batchId": proposal["batchId"],
+            "status": proposal["status"],
+            "kind": proposal["kind"],
+            "label": label,
+            "confidence": proposal["provenance"]["confidence"],
+            "authorityLevel": proposal["provenance"]["authorityLevel"],
+            "reviewReasons": proposal.get("reviewReasons", []),
+            "ruleIds": proposal.get("policyDecision", {}).get("ruleIds", []),
+        })
+    return {"proposalCount": len(items), "items": items}
+
+
+def proposal_ids_for_numbers(config: IntakeConfig, numbers: Iterable[int] | None) -> list[str]:
+    requested = list(numbers or [])
+    if not requested:
+        return []
+    items = review_list(config)["items"]
+    by_number = {item["number"]: item["proposalId"] for item in items}
+    invalid = sorted(set(requested) - set(by_number))
+    if invalid:
+        raise ValueError(f"Unknown review numbers: {invalid}")
+    return [by_number[number] for number in requested]
 
 
 def _select(staging: dict[str, Any], proposal_ids: Iterable[str] | None, batch_id: str | None, select_all: bool, allowed: set[str]) -> list[tuple[dict[str, Any], dict[str, Any]]]:
@@ -562,33 +612,75 @@ def build_parser() -> argparse.ArgumentParser:
     importer.add_argument("--authority-tier", choices=("auto", *AUTHORITY_LEVELS), default="auto")
     previewer = subparsers.add_parser("preview", help="Preview proposals without changing either graph.")
     previewer.add_argument("--status", action="append", choices=sorted(REVIEW_STATUSES))
+    reviewer_list = subparsers.add_parser("review", help="Show a concise numbered proposal list.")
+    reviewer_list.add_argument("--status", action="append", choices=sorted(REVIEW_STATUSES))
     for name in ("approve-private", "approve-public", "reject"):
         reviewer = subparsers.add_parser(name)
         reviewer.add_argument("proposal_ids", nargs="*")
+        reviewer.add_argument("--number", type=int, action="append", default=[], help="Select a proposal by its number from the review command; repeat as needed.")
         reviewer.add_argument("--batch")
         reviewer.add_argument("--all", action="store_true")
         if name == "approve-public":
             reviewer.add_argument("--allow-sensitive", action="store_true", help="Explicitly allow reviewed sensitive content to receive public approval.")
     subparsers.add_parser("publish", help="Publish only approved-public proposals.")
+    validator = subparsers.add_parser("validate-chatgpt", help="Validate a local ChatGPT conversations.json or ZIP export.")
+    validator.add_argument("path", type=Path)
+    for command in ("dry-run-chatgpt", "stage-chatgpt"):
+        processor = subparsers.add_parser(command, help="Analyze without writes." if command.startswith("dry") else "Create review proposals after access approval.")
+        processor.add_argument("path", type=Path)
+        processor.add_argument("--conversation", action="append", default=[])
+        processor.add_argument("--project", action="append", default=[])
+        processor.add_argument("--title")
+        processor.add_argument("--from-date", type=date.fromisoformat)
+        processor.add_argument("--to-date", type=date.fromisoformat)
+        processor.add_argument("--authority-tier", choices=("auto", *AUTHORITY_LEVELS), default="auto")
+    subparsers.add_parser("access-plan", help="Show whether a private viewing design has been approved.")
+    access = subparsers.add_parser("approve-access", help="Record Tim's explicit private-access design approval locally.")
+    access.add_argument("--mode", required=True, choices=("local-only", "tailscale", "cloudflare-access"))
+    viewer = subparsers.add_parser("view-private", help="Open the private master graph on this computer only.")
+    viewer.add_argument("--port", type=int, default=8765)
+    viewer.add_argument("--no-open", action="store_true")
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
-    config = IntakeConfig(arguments.public_graph.resolve(), arguments.private_graph.resolve(), arguments.staging.resolve(), arguments.log_dir.resolve())
+    config = IntakeConfig(arguments.public_graph.resolve(), arguments.private_graph.resolve(), arguments.staging.resolve(), arguments.log_dir.resolve(), harness_path=default_config().harness_path)
     try:
         if arguments.command == "import":
             result: Any = import_export(arguments.path, config, arguments.authority_tier).as_dict()
         elif arguments.command == "preview":
             result = preview(config, arguments.status)
+        elif arguments.command == "review":
+            result = review_list(config, arguments.status)
         elif arguments.command == "approve-private":
-            result = approve(config, "private", arguments.proposal_ids, arguments.batch, arguments.all).as_dict()
+            ids = [*arguments.proposal_ids, *proposal_ids_for_numbers(config, arguments.number)]
+            result = approve(config, "private", ids, arguments.batch, arguments.all).as_dict()
         elif arguments.command == "approve-public":
-            result = approve(config, "public", arguments.proposal_ids, arguments.batch, arguments.all, arguments.allow_sensitive).as_dict()
+            ids = [*arguments.proposal_ids, *proposal_ids_for_numbers(config, arguments.number)]
+            result = approve(config, "public", ids, arguments.batch, arguments.all, arguments.allow_sensitive).as_dict()
         elif arguments.command == "reject":
-            result = reject(config, arguments.proposal_ids, arguments.batch, arguments.all).as_dict()
-        else:
+            ids = [*arguments.proposal_ids, *proposal_ids_for_numbers(config, arguments.number)]
+            result = reject(config, ids, arguments.batch, arguments.all).as_dict()
+        elif arguments.command == "publish":
             result = publish(config).as_dict()
+        elif arguments.command == "validate-chatgpt":
+            from .chatgpt_export import validate_summary
+            result = validate_summary(arguments.path)
+        elif arguments.command in {"dry-run-chatgpt", "stage-chatgpt"}:
+            from .chatgpt_export import ExportFilters, process_export
+            filters = ExportFilters(tuple(arguments.conversation), tuple(arguments.project), arguments.title, arguments.from_date, arguments.to_date)
+            result = process_export(arguments.path, config, filters, stage=arguments.command == "stage-chatgpt", authority_tier=arguments.authority_tier).as_dict()
+        elif arguments.command == "access-plan":
+            from .chatgpt_export import access_status
+            result = access_status(config)
+        elif arguments.command == "approve-access":
+            from .chatgpt_export import approve_access_design
+            result = approve_access_design(config, arguments.mode)
+        else:
+            from .private_view import serve
+            serve(config, port=arguments.port, open_browser=not arguments.no_open)
+            return 0
     except (OSError, ValueError, RuntimeError, json.JSONDecodeError, zipfile.BadZipFile) as error:
         print(json.dumps({"status": "error", "error": str(error)}, indent=2))
         return 1

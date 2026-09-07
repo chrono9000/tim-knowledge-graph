@@ -41,6 +41,9 @@ logs/*
 **/*project_export*.json
 **/*project-export*.zip
 **/*project_export*.zip
+**/access-approval.json
+**/chatgpt-processing-*.json
+**/chatgpt-approval-*.json
 
 # Temporary, backup, and editor files.
 *.tmp
