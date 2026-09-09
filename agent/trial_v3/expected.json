@@ -1,0 +1,1048 @@
+{
+  "entities": [
+    {
+      "id": "nadia",
+      "label": "Nadia Ortega",
+      "type": "person",
+      "aliases": [
+        "Nadia O."
+      ],
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m1",
+          "quote": "I'm Nadia Ortega; friends shorten my name to Nadia O. For relative dates in this conversation, use America/New_York."
+        },
+        {
+          "conversationId": "synthetic-4",
+          "messageId": "synthetic-4-m1",
+          "quote": "This is Nadia O., Nadia Ortega from Project Kestrel. Use America/New_York for relative dates."
+        }
+      ]
+    },
+    {
+      "id": "rob",
+      "label": "Roberto Diaz",
+      "type": "person",
+      "aliases": [
+        "Rob"
+      ],
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m2",
+          "quote": "Project Kestrel is the oral-history recording project; in these notes I shorten that to Kestrel. Roberto Diaz, whom we call Rob, is the sound engineer. Lucia Chen, also called Lu, is the producer."
+        }
+      ]
+    },
+    {
+      "id": "lu",
+      "label": "Lucia Chen",
+      "type": "person",
+      "aliases": [
+        "Lu"
+      ],
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m2",
+          "quote": "Project Kestrel is the oral-history recording project; in these notes I shorten that to Kestrel. Roberto Diaz, whom we call Rob, is the sound engineer. Lucia Chen, also called Lu, is the producer."
+        }
+      ]
+    },
+    {
+      "id": "kestrel",
+      "label": "Project Kestrel",
+      "type": "project",
+      "aliases": [
+        "Kestrel"
+      ],
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m2",
+          "quote": "Project Kestrel is the oral-history recording project; in these notes I shorten that to Kestrel. Roberto Diaz, whom we call Rob, is the sound engineer. Lucia Chen, also called Lu, is the producer."
+        }
+      ]
+    },
+    {
+      "id": "garden",
+      "label": "Lantern Garden",
+      "type": "project",
+      "aliases": [
+        "the beds project"
+      ],
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m27",
+          "quote": "A different topic now: Lantern Garden is the neighborhood growing project. I sometimes call it the beds project."
+        }
+      ]
+    },
+    {
+      "id": "rec-a",
+      "label": "Recorder A",
+      "type": "asset",
+      "aliases": [],
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m4",
+          "quote": "Recorder A holds 64 hours of audio."
+        }
+      ]
+    },
+    {
+      "id": "rec-b",
+      "label": "Recorder B",
+      "type": "asset",
+      "aliases": [],
+      "support": [
+        {
+          "conversationId": "synthetic-2",
+          "messageId": "synthetic-2-m21",
+          "quote": "Recorder B holds 64 hours of audio."
+        }
+      ]
+    },
+    {
+      "id": "owen",
+      "label": "Owen Park",
+      "type": "person",
+      "aliases": [],
+      "support": [
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m1",
+          "quote": "I'm Owen Park. Kestrel Bridge is our footbridge repair project, not the oral-history project called Project Kestrel. Nora Ortega is our treasurer; she is not Nadia Ortega."
+        }
+      ]
+    },
+    {
+      "id": "nora",
+      "label": "Nora Ortega",
+      "type": "person",
+      "aliases": [
+        "the treasurer"
+      ],
+      "support": [
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m1",
+          "quote": "I'm Owen Park. Kestrel Bridge is our footbridge repair project, not the oral-history project called Project Kestrel. Nora Ortega is our treasurer; she is not Nadia Ortega."
+        },
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m24",
+          "quote": "The treasurer has agreed to prepare the cost summary for Kestrel Bridge."
+        }
+      ]
+    },
+    {
+      "id": "bridge",
+      "label": "Kestrel Bridge",
+      "type": "project",
+      "aliases": [],
+      "support": [
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m1",
+          "quote": "I'm Owen Park. Kestrel Bridge is our footbridge repair project, not the oral-history project called Project Kestrel. Nora Ortega is our treasurer; she is not Nadia Ortega."
+        }
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "conversationId": "synthetic-1",
+      "messageId": "synthetic-1-m3",
+      "quote": "Roberto Diaz is responsible for Project Kestrel.",
+      "id": "c1",
+      "kind": "statement",
+      "speaker": "nadia",
+      "subject": "kestrel",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m1",
+          "quote": "I'm Nadia Ortega; friends shorten my name to Nadia O. For relative dates in this conversation, use America/New_York."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m2",
+          "quote": "Project Kestrel is the oral-history recording project; in these notes I shorten that to Kestrel. Roberto Diaz, whom we call Rob, is the sound engineer. Lucia Chen, also called Lu, is the producer."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m3",
+          "quote": "Roberto Diaz is responsible for Project Kestrel."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-1",
+      "messageId": "synthetic-1-m4",
+      "quote": "Recorder A holds 64 hours of audio.",
+      "id": "c2",
+      "kind": "statement",
+      "speaker": "nadia",
+      "subject": "rec-a",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m4",
+          "quote": "Recorder A holds 64 hours of audio."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-1",
+      "messageId": "synthetic-1-m5",
+      "quote": "I recommend mono recording for Project Kestrel.",
+      "id": "c3",
+      "kind": "recommendation",
+      "speaker": null,
+      "subject": "kestrel",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m5",
+          "quote": "I recommend mono recording for Project Kestrel."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m6",
+          "quote": "Yes, I approve that mono recording plan for Kestrel."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "accepted"
+    },
+    {
+      "conversationId": "synthetic-1",
+      "messageId": "synthetic-1-m6",
+      "quote": "Yes, I approve that mono recording plan for Kestrel.",
+      "id": "c4",
+      "kind": "decision",
+      "speaker": "nadia",
+      "subject": "kestrel",
+      "decisionOwner": "nadia",
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m1",
+          "quote": "I'm Nadia Ortega; friends shorten my name to Nadia O. For relative dates in this conversation, use America/New_York."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m5",
+          "quote": "I recommend mono recording for Project Kestrel."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m6",
+          "quote": "Yes, I approve that mono recording plan for Kestrel."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-1",
+      "messageId": "synthetic-1-m28",
+      "quote": "For Lantern Garden, I prefer an inspection every morning.",
+      "id": "c5",
+      "kind": "preference",
+      "speaker": "nadia",
+      "subject": "garden",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m28",
+          "quote": "For Lantern Garden, I prefer an inspection every morning."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-1",
+      "messageId": "synthetic-1-m29",
+      "quote": "I can help make labels for Lantern Garden if another pair of hands would be useful.",
+      "id": "c6",
+      "kind": "recommendation",
+      "speaker": "nadia",
+      "subject": "garden",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m29",
+          "quote": "I can help make labels for Lantern Garden if another pair of hands would be useful."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "unanswered"
+    },
+    {
+      "conversationId": "synthetic-1",
+      "messageId": "synthetic-1-m47",
+      "quote": "I'll get those microphone checks to her by tomorrow at 15:00.",
+      "id": "c7",
+      "kind": "commitment",
+      "speaker": "nadia",
+      "subject": "kestrel",
+      "decisionOwner": null,
+      "commitment": {
+        "owner": "nadia",
+        "due": {
+          "date": "2027-06-15",
+          "time": "15:00",
+          "timezone": "America/New_York",
+          "ambiguity": "none"
+        }
+      },
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m1",
+          "quote": "I'm Nadia Ortega; friends shorten my name to Nadia O. For relative dates in this conversation, use America/New_York."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m46",
+          "quote": "Back to Project Kestrel. The microphone checks are for this recording project, and Lucia Chen is waiting for them."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m47",
+          "quote": "I'll get those microphone checks to her by tomorrow at 15:00."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-1",
+      "messageId": "synthetic-1-m48",
+      "quote": "Rob has agreed to label the files for Kestrel.",
+      "id": "c8",
+      "kind": "commitment",
+      "speaker": "nadia",
+      "subject": "kestrel",
+      "decisionOwner": null,
+      "commitment": {
+        "owner": "rob",
+        "due": {
+          "date": null,
+          "time": null,
+          "timezone": "America/New_York",
+          "ambiguity": "none"
+        }
+      },
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m2",
+          "quote": "Project Kestrel is the oral-history recording project; in these notes I shorten that to Kestrel. Roberto Diaz, whom we call Rob, is the sound engineer. Lucia Chen, also called Lu, is the producer."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m48",
+          "quote": "Rob has agreed to label the files for Kestrel."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-1",
+      "messageId": "synthetic-1-m49",
+      "quote": "He uses a raised-dot label maker for the Kestrel files.",
+      "id": "c9",
+      "kind": "statement",
+      "speaker": "nadia",
+      "subject": "kestrel",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m2",
+          "quote": "Project Kestrel is the oral-history recording project; in these notes I shorten that to Kestrel. Roberto Diaz, whom we call Rob, is the sound engineer. Lucia Chen, also called Lu, is the producer."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m48",
+          "quote": "Rob has agreed to label the files for Kestrel."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m49",
+          "quote": "He uses a raised-dot label maker for the Kestrel files."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-1",
+      "messageId": "synthetic-1-m50",
+      "quote": "Lu has agreed to review the release forms for Kestrel.",
+      "id": "c10",
+      "kind": "commitment",
+      "speaker": "nadia",
+      "subject": "kestrel",
+      "decisionOwner": null,
+      "commitment": {
+        "owner": "lu",
+        "due": {
+          "date": null,
+          "time": null,
+          "timezone": "America/New_York",
+          "ambiguity": "none"
+        }
+      },
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m2",
+          "quote": "Project Kestrel is the oral-history recording project; in these notes I shorten that to Kestrel. Roberto Diaz, whom we call Rob, is the sound engineer. Lucia Chen, also called Lu, is the producer."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m50",
+          "quote": "Lu has agreed to review the release forms for Kestrel."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-1",
+      "messageId": "synthetic-1-m51",
+      "quote": "She stores the Kestrel release forms in the locked cabinet.",
+      "id": "c11",
+      "kind": "statement",
+      "speaker": "nadia",
+      "subject": "kestrel",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m2",
+          "quote": "Project Kestrel is the oral-history recording project; in these notes I shorten that to Kestrel. Roberto Diaz, whom we call Rob, is the sound engineer. Lucia Chen, also called Lu, is the producer."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m50",
+          "quote": "Lu has agreed to review the release forms for Kestrel."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m51",
+          "quote": "She stores the Kestrel release forms in the locked cabinet."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-2",
+      "messageId": "synthetic-2-m20",
+      "quote": "Correction to my earlier capacity note: Recorder A holds 96 hours of audio, not 64.",
+      "id": "c12",
+      "kind": "statement",
+      "speaker": "nadia",
+      "subject": "rec-a",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m4",
+          "quote": "Recorder A holds 64 hours of audio."
+        },
+        {
+          "conversationId": "synthetic-2",
+          "messageId": "synthetic-2-m20",
+          "quote": "Correction to my earlier capacity note: Recorder A holds 96 hours of audio, not 64."
+        }
+      ],
+      "supersedes": "c2",
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-2",
+      "messageId": "synthetic-2-m21",
+      "quote": "Recorder B holds 64 hours of audio.",
+      "id": "c13",
+      "kind": "statement",
+      "speaker": "nadia",
+      "subject": "rec-b",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-2",
+          "messageId": "synthetic-2-m21",
+          "quote": "Recorder B holds 64 hours of audio."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-2",
+      "messageId": "synthetic-2-m22",
+      "quote": "I withdraw my mono choice for Project Kestrel and now choose stereo recording instead.",
+      "id": "c14",
+      "kind": "decision",
+      "speaker": "nadia",
+      "subject": "kestrel",
+      "decisionOwner": "nadia",
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-2",
+          "messageId": "synthetic-2-m1",
+          "quote": "Nadia Ortega here again. Kestrel means Project Kestrel, the same oral-history project. Use America/New_York for local dates."
+        },
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m6",
+          "quote": "Yes, I approve that mono recording plan for Kestrel."
+        },
+        {
+          "conversationId": "synthetic-2",
+          "messageId": "synthetic-2-m22",
+          "quote": "I withdraw my mono choice for Project Kestrel and now choose stereo recording instead."
+        }
+      ],
+      "supersedes": "c4",
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-2",
+      "messageId": "synthetic-2-m23",
+      "quote": "I recommend automated speaker identification for Project Kestrel.",
+      "id": "c15",
+      "kind": "recommendation",
+      "speaker": null,
+      "subject": "kestrel",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-2",
+          "messageId": "synthetic-2-m23",
+          "quote": "I recommend automated speaker identification for Project Kestrel."
+        },
+        {
+          "conversationId": "synthetic-2",
+          "messageId": "synthetic-2-m24",
+          "quote": "I reject automated speaker identification for Kestrel; the recordings are too noisy."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "rejected"
+    },
+    {
+      "conversationId": "synthetic-2",
+      "messageId": "synthetic-2-m24",
+      "quote": "I reject automated speaker identification for Kestrel; the recordings are too noisy.",
+      "id": "c16",
+      "kind": "statement",
+      "speaker": "nadia",
+      "subject": "kestrel",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-2",
+          "messageId": "synthetic-2-m24",
+          "quote": "I reject automated speaker identification for Kestrel; the recordings are too noisy."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-2",
+      "messageId": "synthetic-2-m43",
+      "quote": "For Lantern Garden, I no longer prefer a morning inspection every day; I now prefer inspections twice a week.",
+      "id": "c17",
+      "kind": "preference",
+      "speaker": "nadia",
+      "subject": "garden",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-1",
+          "messageId": "synthetic-1-m28",
+          "quote": "For Lantern Garden, I prefer an inspection every morning."
+        },
+        {
+          "conversationId": "synthetic-2",
+          "messageId": "synthetic-2-m43",
+          "quote": "For Lantern Garden, I no longer prefer a morning inspection every day; I now prefer inspections twice a week."
+        }
+      ],
+      "supersedes": "c5",
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-2",
+      "messageId": "synthetic-2-m44",
+      "quote": "I recommend placing a printed maintenance checklist in Lantern Garden.",
+      "id": "c18",
+      "kind": "recommendation",
+      "speaker": null,
+      "subject": "garden",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-2",
+          "messageId": "synthetic-2-m44",
+          "quote": "I recommend placing a printed maintenance checklist in Lantern Garden."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "unanswered"
+    },
+    {
+      "conversationId": "synthetic-3",
+      "messageId": "synthetic-3-m2",
+      "quote": "Nora Ortega is responsible for Kestrel Bridge.",
+      "id": "c19",
+      "kind": "statement",
+      "speaker": "owen",
+      "subject": "bridge",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m1",
+          "quote": "I'm Owen Park. Kestrel Bridge is our footbridge repair project, not the oral-history project called Project Kestrel. Nora Ortega is our treasurer; she is not Nadia Ortega."
+        },
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m2",
+          "quote": "Nora Ortega is responsible for Kestrel Bridge."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-3",
+      "messageId": "synthetic-3-m3",
+      "quote": "Kestrel Bridge has a steel deck.",
+      "id": "c20",
+      "kind": "statement",
+      "speaker": "owen",
+      "subject": "bridge",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m3",
+          "quote": "Kestrel Bridge has a steel deck."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-3",
+      "messageId": "synthetic-3-m24",
+      "quote": "The treasurer has agreed to prepare the cost summary for Kestrel Bridge.",
+      "id": "c21",
+      "kind": "commitment",
+      "speaker": "owen",
+      "subject": "bridge",
+      "decisionOwner": null,
+      "commitment": {
+        "owner": "nora",
+        "due": {
+          "date": null,
+          "time": null,
+          "timezone": null,
+          "ambiguity": "none"
+        }
+      },
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m1",
+          "quote": "I'm Owen Park. Kestrel Bridge is our footbridge repair project, not the oral-history project called Project Kestrel. Nora Ortega is our treasurer; she is not Nadia Ortega."
+        },
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m24",
+          "quote": "The treasurer has agreed to prepare the cost summary for Kestrel Bridge."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-3",
+      "messageId": "synthetic-3-m25",
+      "quote": "Owen Park and Nora Ortega both checked the permit list for Kestrel Bridge.",
+      "id": "c22",
+      "kind": "statement",
+      "speaker": "owen",
+      "subject": "bridge",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m25",
+          "quote": "Owen Park and Nora Ortega both checked the permit list for Kestrel Bridge."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-3",
+      "messageId": "synthetic-3-m26",
+      "quote": "One of them has agreed to submit the Kestrel Bridge application, but I cannot remember which.",
+      "id": "c23",
+      "kind": "commitment",
+      "speaker": "owen",
+      "subject": "bridge",
+      "decisionOwner": null,
+      "commitment": {
+        "owner": null,
+        "due": {
+          "date": null,
+          "time": null,
+          "timezone": null,
+          "ambiguity": "none"
+        }
+      },
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m25",
+          "quote": "Owen Park and Nora Ortega both checked the permit list for Kestrel Bridge."
+        },
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m26",
+          "quote": "One of them has agreed to submit the Kestrel Bridge application, but I cannot remember which."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-3",
+      "messageId": "synthetic-3-m27",
+      "quote": "For Kestrel Bridge, I prefer the safety notes on paper.",
+      "id": "c24",
+      "kind": "preference",
+      "speaker": "owen",
+      "subject": "bridge",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-3",
+          "messageId": "synthetic-3-m27",
+          "quote": "For Kestrel Bridge, I prefer the safety notes on paper."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-4",
+      "messageId": "synthetic-4-m2",
+      "quote": "Roberto Diaz is responsible for Project Kestrel.",
+      "id": "c25",
+      "kind": "statement",
+      "speaker": "nadia",
+      "subject": "kestrel",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-4",
+          "messageId": "synthetic-4-m1",
+          "quote": "This is Nadia O., Nadia Ortega from Project Kestrel. Use America/New_York for relative dates."
+        },
+        {
+          "conversationId": "synthetic-4",
+          "messageId": "synthetic-4-m2",
+          "quote": "Roberto Diaz is responsible for Project Kestrel."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": "c1",
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-4",
+      "messageId": "synthetic-4-m3",
+      "quote": "Recorder A holds 96 hours of audio.",
+      "id": "c26",
+      "kind": "statement",
+      "speaker": "nadia",
+      "subject": "rec-a",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-2",
+          "messageId": "synthetic-2-m20",
+          "quote": "Correction to my earlier capacity note: Recorder A holds 96 hours of audio, not 64."
+        },
+        {
+          "conversationId": "synthetic-4",
+          "messageId": "synthetic-4-m3",
+          "quote": "Recorder A holds 96 hours of audio."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": "c12",
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-4",
+      "messageId": "synthetic-4-m20",
+      "quote": "For Project Kestrel, we will assemble the listening copies next Monday; I cannot identify who in the group accepted responsibility.",
+      "id": "c27",
+      "kind": "commitment",
+      "speaker": "nadia",
+      "subject": "kestrel",
+      "decisionOwner": null,
+      "commitment": {
+        "owner": null,
+        "due": {
+          "date": null,
+          "time": null,
+          "timezone": "America/New_York",
+          "ambiguity": "date"
+        }
+      },
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-4",
+          "messageId": "synthetic-4-m1",
+          "quote": "This is Nadia O., Nadia Ortega from Project Kestrel. Use America/New_York for relative dates."
+        },
+        {
+          "conversationId": "synthetic-4",
+          "messageId": "synthetic-4-m20",
+          "quote": "For Project Kestrel, we will assemble the listening copies next Monday; I cannot identify who in the group accepted responsibility."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-4",
+      "messageId": "synthetic-4-m21",
+      "quote": "For Lantern Garden, I prefer inspections twice a week.",
+      "id": "c28",
+      "kind": "preference",
+      "speaker": "nadia",
+      "subject": "garden",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-4",
+          "messageId": "synthetic-4-m21",
+          "quote": "For Lantern Garden, I prefer inspections twice a week."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": "c17",
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-4",
+      "messageId": "synthetic-4-m22",
+      "quote": "For Lantern Garden, I prefer inspections once a month.",
+      "id": "c29",
+      "kind": "preference",
+      "speaker": "nadia",
+      "subject": "garden",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-4",
+          "messageId": "synthetic-4-m22",
+          "quote": "For Lantern Garden, I prefer inspections once a month."
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    },
+    {
+      "conversationId": "synthetic-5",
+      "messageId": "synthetic-5-m2",
+      "quote": "Which one should receive the spare battery pack?",
+      "id": "c30",
+      "kind": "unresolved-question",
+      "speaker": "nadia",
+      "subject": null,
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "synthetic-5",
+          "messageId": "synthetic-5-m1",
+          "quote": "Nadia Ortega writing. Project Kestrel and Lantern Garden are both on my desk today."
+        },
+        {
+          "conversationId": "synthetic-5",
+          "messageId": "synthetic-5-m2",
+          "quote": "Which one should receive the spare battery pack?"
+        }
+      ],
+      "supersedes": null,
+      "duplicateOf": null,
+      "recommendationState": "not-applicable"
+    }
+  ],
+  "relationships": [
+    {
+      "type": "owner-of",
+      "source": "rob",
+      "target": "kestrel",
+      "evidenceClaim": "c1"
+    },
+    {
+      "type": "owner-of",
+      "source": "nora",
+      "target": "bridge",
+      "evidenceClaim": "c19"
+    }
+  ],
+  "flags": [
+    {
+      "code": "ambiguous-reference",
+      "field": "commitment.owner",
+      "claimIds": [
+        "c23"
+      ],
+      "reason": "Either Owen Park or Nora Ortega may own the application task; the source cannot identify which."
+    },
+    {
+      "code": "missing-owner",
+      "field": "commitment.owner",
+      "claimIds": [
+        "c27"
+      ],
+      "reason": "The speaker cannot identify which group member accepted the commitment."
+    },
+    {
+      "code": "ambiguous-date",
+      "field": "commitment.due",
+      "claimIds": [
+        "c27"
+      ],
+      "reason": "Next Monday does not specify which interpretation of next is intended."
+    },
+    {
+      "code": "possible-conflict",
+      "field": "conflict",
+      "claimIds": [
+        "c17",
+        "c29"
+      ],
+      "reason": "Nadia gives incompatible inspection frequencies for Lantern Garden without explicitly replacing the twice-weekly preference."
+    },
+    {
+      "code": "ambiguous-reference",
+      "field": "subject",
+      "claimIds": [
+        "c30"
+      ],
+      "reason": "The question could refer to Project Kestrel or Lantern Garden; neither is selected."
+    }
+  ]
+}

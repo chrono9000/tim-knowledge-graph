@@ -1,0 +1,19 @@
+{
+  "accuracyGate": {
+    "materialRecall": 1.0,
+    "inventedFacts": 0,
+    "unnecessaryUncertaintyFlags": 0,
+    "schemaValidatorErrors": 0,
+    "minimumEntityAndClassificationPrecisionRecall": 0.95
+  },
+  "volumeGate": {
+    "maximumRecommendedIndividualItemsPer100Conversations": 100,
+    "groupsDoNotReplaceIndividualCount": true,
+    "noQuotaFiltering": true
+  },
+  "scoring": "Align claims by conversation/message and overlapping exact span; canonical entity labels/explicit aliases normalize IDs. Score material claims separately from retained context; omitting a separate context record is allowed only when the raw source and needed supporting spans remain available. Duplicate occurrences attach to earliest equivalent material record and do not create new numbered proposals.",
+  "burden": "Recommended means high-priority individual material proposals. Expanded includes medium; evidence-only has no proposal number. Report both individual item count and project/entity group count. All approvals remain manual.",
+  "priorityPolicy": "High decisions, ownership, changes, risks, blockers, deadline commitments; medium durable reference/preferences/constraints and no-deadline commitments; low evidence-only.",
+  "uncertainty": "Only field-specific source-supported ambiguity; an operational question itself does not require a redundant flag.",
+  "limitations": "Parent-authored synthetic mix, not a representative typical-conversation sample. The scaled count is a scenario; general volume target remains unproven."
+}

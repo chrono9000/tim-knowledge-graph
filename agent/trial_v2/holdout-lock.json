@@ -1,0 +1,13 @@
+{
+  "lockedAt": "2026-09-08T00:38:05.957381+00:00",
+  "files": {
+    "agent\\trial_v2\\holdout-inputs.json": "2b21865d97bcb9b68388a52c98011e7c06d9316335ade32a73b9398528761a5c",
+    "agent\\trial_v2\\holdout-expected.json": "a1bed43edc776da9d90e71c2879d410dede6bb78536155f409f03456a1407582",
+    "agent\\trial_v2\\schema.json": "92dd7c6cb16abcb54d3b4cc55426efac8f6c073d7b9f74eec33691c1e8601a38",
+    "agent\\trial_v2\\prompt.txt": "fd2db2a5f77dab03c85a9dc2064d2da12859b7c70494bd06b63f45e40260ef91",
+    "agent\\trial_v2\\criteria.json": "0ef8b5a1fede0182b4f414fe3936072cda7f1a186004f410e356b48f5435f6c2",
+    "agent\\trial_v2\\contract.py": "b689e2f9eab6883e314258266c8a373a13bc9846c39c2ae482cae2788c19622a"
+  },
+  "cases": 14,
+  "claims": 25
+}

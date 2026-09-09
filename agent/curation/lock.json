@@ -1,0 +1,12 @@
+{
+  "lockedAt": "2026-09-09T03:32:52.691877+00:00",
+  "files": {
+    "agent\\curation\\holdout-source.json": "73d0a887c266da217509fe3fa3a7bff8c591da54bb226563798bbad91b159a86",
+    "agent\\curation\\holdout-expected.json": "06089ddf859357f2b485598e917f852b0cac7dfe775ec9f4ce8d85fa2eb771f8",
+    "agent\\curation\\schema.json": "4c2eb96f8074d0581df6174b889d69a6826f01aae037f50d72b455ec99378f69",
+    "agent\\curation\\prompt.txt": "396906ca7a4361ed8b5f0ebaaf83d44b6d6938bce74aefdba260bb97829560cd",
+    "agent\\curation\\core.py": "91a0484f5811763f44259cc57ca9b1b590261be4dce0c2c5ff92b0f41099b58e",
+    "agent\\curation\\criteria.json": "5914537fd2d8df3d8a35b472357ec7a97a11f232ba80cd0204244d4b11e0ca82"
+  },
+  "conversations": 12
+}

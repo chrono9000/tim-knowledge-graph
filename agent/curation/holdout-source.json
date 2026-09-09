@@ -1,0 +1,878 @@
+[
+  {
+    "id": "curation-1",
+    "title": "Ownership and a small handoff",
+    "create_time": 1812024000,
+    "update_time": 1812024240,
+    "mapping": {
+      "curation-1-m1": {
+        "id": "curation-1-m1",
+        "parent": null,
+        "children": [
+          "curation-1-m2"
+        ],
+        "message": {
+          "id": "curation-1-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812024000,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+            ]
+          }
+        }
+      },
+      "curation-1-m2": {
+        "id": "curation-1-m2",
+        "parent": "curation-1-m1",
+        "children": [
+          "curation-1-m3"
+        ],
+        "message": {
+          "id": "curation-1-m2",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812024060,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Tessa Moss, often called Tess, is the survey coordinator."
+            ]
+          }
+        }
+      },
+      "curation-1-m3": {
+        "id": "curation-1-m3",
+        "parent": "curation-1-m2",
+        "children": [
+          "curation-1-m4"
+        ],
+        "message": {
+          "id": "curation-1-m3",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812024120,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Tessa Moss is responsible for Project Alderway."
+            ]
+          }
+        }
+      },
+      "curation-1-m4": {
+        "id": "curation-1-m4",
+        "parent": "curation-1-m3",
+        "children": [
+          "curation-1-m5"
+        ],
+        "message": {
+          "id": "curation-1-m4",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812024180,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Tess is waiting for the field sketch at reception."
+            ]
+          }
+        }
+      },
+      "curation-1-m5": {
+        "id": "curation-1-m5",
+        "parent": "curation-1-m4",
+        "children": [],
+        "message": {
+          "id": "curation-1-m5",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812024240,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I will send the field sketch for Alderway tomorrow at 10:00."
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-1-m5"
+  },
+  {
+    "id": "curation-2",
+    "title": "Equipment reference",
+    "create_time": 1812110400,
+    "update_time": 1812110580,
+    "mapping": {
+      "curation-2-m1": {
+        "id": "curation-2-m1",
+        "parent": null,
+        "children": [
+          "curation-2-m2"
+        ],
+        "message": {
+          "id": "curation-2-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812110400,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+            ]
+          }
+        }
+      },
+      "curation-2-m2": {
+        "id": "curation-2-m2",
+        "parent": "curation-2-m1",
+        "children": [
+          "curation-2-m3"
+        ],
+        "message": {
+          "id": "curation-2-m2",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812110460,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Gauge Cedar samples once every 200 milliseconds."
+            ]
+          }
+        }
+      },
+      "curation-2-m3": {
+        "id": "curation-2-m3",
+        "parent": "curation-2-m2",
+        "children": [
+          "curation-2-m4"
+        ],
+        "message": {
+          "id": "curation-2-m3",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812110520,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "The Gauge Cedar parcel just arrived on the side table."
+            ]
+          }
+        }
+      },
+      "curation-2-m4": {
+        "id": "curation-2-m4",
+        "parent": "curation-2-m3",
+        "children": [],
+        "message": {
+          "id": "curation-2-m4",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812110580,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "For Alderway, I prefer location notes in plain text."
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-2-m4"
+  },
+  {
+    "id": "curation-3",
+    "title": "Release risk",
+    "create_time": 1812196800,
+    "update_time": 1812196920,
+    "mapping": {
+      "curation-3-m1": {
+        "id": "curation-3-m1",
+        "parent": null,
+        "children": [
+          "curation-3-m2"
+        ],
+        "message": {
+          "id": "curation-3-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812196800,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+            ]
+          }
+        }
+      },
+      "curation-3-m2": {
+        "id": "curation-3-m2",
+        "parent": "curation-3-m1",
+        "children": [
+          "curation-3-m3"
+        ],
+        "message": {
+          "id": "curation-3-m2",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812196860,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Waiting for the missing boundary survey blocks the Alderway release scheduled for tomorrow."
+            ]
+          }
+        }
+      },
+      "curation-3-m3": {
+        "id": "curation-3-m3",
+        "parent": "curation-3-m2",
+        "children": [],
+        "message": {
+          "id": "curation-3-m3",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812196920,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I authorize postponing the Alderway release until the boundary survey is complete."
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-3-m3"
+  },
+  {
+    "id": "curation-4",
+    "title": "An unadopted suggestion",
+    "create_time": 1812283200,
+    "update_time": 1812283320,
+    "mapping": {
+      "curation-4-m1": {
+        "id": "curation-4-m1",
+        "parent": null,
+        "children": [
+          "curation-4-m2"
+        ],
+        "message": {
+          "id": "curation-4-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812283200,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+            ]
+          }
+        }
+      },
+      "curation-4-m2": {
+        "id": "curation-4-m2",
+        "parent": "curation-4-m1",
+        "children": [
+          "curation-4-m3"
+        ],
+        "message": {
+          "id": "curation-4-m2",
+          "author": {
+            "role": "assistant",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812283260,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I recommend adding decorative borders to the Alderway draft."
+            ]
+          }
+        }
+      },
+      "curation-4-m3": {
+        "id": "curation-4-m3",
+        "parent": "curation-4-m2",
+        "children": [],
+        "message": {
+          "id": "curation-4-m3",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812283320,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Thanks for the suggestion; let me think about it."
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-4-m3"
+  },
+  {
+    "id": "curation-5",
+    "title": "Operating limit",
+    "create_time": 1812369600,
+    "update_time": 1812369720,
+    "mapping": {
+      "curation-5-m1": {
+        "id": "curation-5-m1",
+        "parent": null,
+        "children": [
+          "curation-5-m2"
+        ],
+        "message": {
+          "id": "curation-5-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812369600,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+            ]
+          }
+        }
+      },
+      "curation-5-m2": {
+        "id": "curation-5-m2",
+        "parent": "curation-5-m1",
+        "children": [
+          "curation-5-m3"
+        ],
+        "message": {
+          "id": "curation-5-m2",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812369660,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Gauge Cedar must operate below or at 45 degrees Celsius."
+            ]
+          }
+        }
+      },
+      "curation-5-m3": {
+        "id": "curation-5-m3",
+        "parent": "curation-5-m2",
+        "children": [],
+        "message": {
+          "id": "curation-5-m3",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812369720,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I put down my coffee while reading the Gauge Cedar sheet."
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-5-m3"
+  },
+  {
+    "id": "curation-6",
+    "title": "A commitment without a due date",
+    "create_time": 1812456000,
+    "update_time": 1812456060,
+    "mapping": {
+      "curation-6-m1": {
+        "id": "curation-6-m1",
+        "parent": null,
+        "children": [
+          "curation-6-m2"
+        ],
+        "message": {
+          "id": "curation-6-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812456000,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+            ]
+          }
+        }
+      },
+      "curation-6-m2": {
+        "id": "curation-6-m2",
+        "parent": "curation-6-m1",
+        "children": [],
+        "message": {
+          "id": "curation-6-m2",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812456060,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I accept responsibility for proofreading the Alderway glossary."
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-6-m2"
+  },
+  {
+    "id": "curation-7",
+    "title": "Reading practice",
+    "create_time": 1812542400,
+    "update_time": 1812542520,
+    "mapping": {
+      "curation-7-m1": {
+        "id": "curation-7-m1",
+        "parent": null,
+        "children": [
+          "curation-7-m2"
+        ],
+        "message": {
+          "id": "curation-7-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812542400,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Please explain what alliteration means in general, using an invented example unrelated to my work."
+            ]
+          }
+        }
+      },
+      "curation-7-m2": {
+        "id": "curation-7-m2",
+        "parent": "curation-7-m1",
+        "children": [
+          "curation-7-m3"
+        ],
+        "message": {
+          "id": "curation-7-m2",
+          "author": {
+            "role": "assistant",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812542460,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Alliteration repeats an initial sound in nearby words. An invented phrase such as silver swans sail demonstrates the sound pattern without describing a real event."
+            ]
+          }
+        }
+      },
+      "curation-7-m3": {
+        "id": "curation-7-m3",
+        "parent": "curation-7-m2",
+        "children": [],
+        "message": {
+          "id": "curation-7-m3",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812542520,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "That is clear, thank you."
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-7-m3"
+  },
+  {
+    "id": "curation-8",
+    "title": "Cross-conversation reminder",
+    "create_time": 1812628800,
+    "update_time": 1812628920,
+    "mapping": {
+      "curation-8-m1": {
+        "id": "curation-8-m1",
+        "parent": null,
+        "children": [
+          "curation-8-m2"
+        ],
+        "message": {
+          "id": "curation-8-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812628800,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+            ]
+          }
+        }
+      },
+      "curation-8-m2": {
+        "id": "curation-8-m2",
+        "parent": "curation-8-m1",
+        "children": [
+          "curation-8-m3"
+        ],
+        "message": {
+          "id": "curation-8-m2",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812628860,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Tessa Moss is responsible for Project Alderway."
+            ]
+          }
+        }
+      },
+      "curation-8-m3": {
+        "id": "curation-8-m3",
+        "parent": "curation-8-m2",
+        "children": [],
+        "message": {
+          "id": "curation-8-m3",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812628920,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Tessa Moss is responsible for Project Alderway."
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-8-m3"
+  },
+  {
+    "id": "curation-9",
+    "title": "A changed documentation preference",
+    "create_time": 1812715200,
+    "update_time": 1812715260,
+    "mapping": {
+      "curation-9-m1": {
+        "id": "curation-9-m1",
+        "parent": null,
+        "children": [
+          "curation-9-m2"
+        ],
+        "message": {
+          "id": "curation-9-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812715200,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+            ]
+          }
+        }
+      },
+      "curation-9-m2": {
+        "id": "curation-9-m2",
+        "parent": "curation-9-m1",
+        "children": [],
+        "message": {
+          "id": "curation-9-m2",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812715260,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "For Alderway, I no longer prefer plain text; I now prefer structured tables for location notes."
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-9-m2"
+  },
+  {
+    "id": "curation-10",
+    "title": "A blocking question",
+    "create_time": 1812801600,
+    "update_time": 1812801660,
+    "mapping": {
+      "curation-10-m1": {
+        "id": "curation-10-m1",
+        "parent": null,
+        "children": [
+          "curation-10-m2"
+        ],
+        "message": {
+          "id": "curation-10-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812801600,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+            ]
+          }
+        }
+      },
+      "curation-10-m2": {
+        "id": "curation-10-m2",
+        "parent": "curation-10-m1",
+        "children": [],
+        "message": {
+          "id": "curation-10-m2",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812801660,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Which approval is missing before Alderway can resume fieldwork?"
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-10-m2"
+  },
+  {
+    "id": "curation-11",
+    "title": "Reference note about another device",
+    "create_time": 1812888000,
+    "update_time": 1812888120,
+    "mapping": {
+      "curation-11-m1": {
+        "id": "curation-11-m1",
+        "parent": null,
+        "children": [
+          "curation-11-m2"
+        ],
+        "message": {
+          "id": "curation-11-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812888000,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+            ]
+          }
+        }
+      },
+      "curation-11-m2": {
+        "id": "curation-11-m2",
+        "parent": "curation-11-m1",
+        "children": [
+          "curation-11-m3"
+        ],
+        "message": {
+          "id": "curation-11-m2",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812888060,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Gauge Willow samples once per second; it is not Gauge Cedar."
+            ]
+          }
+        }
+      },
+      "curation-11-m3": {
+        "id": "curation-11-m3",
+        "parent": "curation-11-m2",
+        "children": [],
+        "message": {
+          "id": "curation-11-m3",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812888120,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I acknowledged the Gauge Willow delivery notification."
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-11-m3"
+  },
+  {
+    "id": "curation-12",
+    "title": "Responsibility transfer",
+    "create_time": 1812974400,
+    "update_time": 1812974520,
+    "mapping": {
+      "curation-12-m1": {
+        "id": "curation-12-m1",
+        "parent": null,
+        "children": [
+          "curation-12-m2"
+        ],
+        "message": {
+          "id": "curation-12-m1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812974400,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+            ]
+          }
+        }
+      },
+      "curation-12-m2": {
+        "id": "curation-12-m2",
+        "parent": "curation-12-m1",
+        "children": [
+          "curation-12-m3"
+        ],
+        "message": {
+          "id": "curation-12-m2",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812974460,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Dorian Hale is our new coordinator."
+            ]
+          }
+        }
+      },
+      "curation-12-m3": {
+        "id": "curation-12-m3",
+        "parent": "curation-12-m2",
+        "children": [],
+        "message": {
+          "id": "curation-12-m3",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1812974520,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "Correction: Dorian Hale is responsible for Project Alderway now, replacing Tessa Moss."
+            ]
+          }
+        }
+      }
+    },
+    "current_node": "curation-12-m3"
+  }
+]

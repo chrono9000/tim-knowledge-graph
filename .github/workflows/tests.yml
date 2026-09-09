@@ -1,7 +1,7 @@
 name: Synthetic workflow tests
 on:
   push:
-    branches: [main]
+    branches: [main, step6-materiality-review]
   pull_request:
 permissions:
   contents: read

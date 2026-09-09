@@ -1,0 +1,357 @@
+{
+  "type": "object",
+  "properties": {
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "messageId": {
+            "type": "string"
+          },
+          "quote": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "statement",
+              "recommendation",
+              "preference",
+              "proposed-choice",
+              "decision",
+              "commitment",
+              "constraint",
+              "unresolved-question"
+            ]
+          },
+          "speaker": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "subject": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decisionOwner": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "commitment": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "owner": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "due": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "time": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "timezone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "ambiguity": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "date",
+                      "time",
+                      "timezone"
+                    ]
+                  }
+                },
+                "required": [
+                  "date",
+                  "time",
+                  "timezone",
+                  "ambiguity"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "owner",
+              "due"
+            ],
+            "additionalProperties": false
+          },
+          "amount": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "unit": {
+                "type": "string"
+              },
+              "operator": {
+                "type": "string",
+                "enum": [
+                  "<=",
+                  ">=",
+                  "="
+                ]
+              },
+              "qualifier": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "value",
+              "unit",
+              "operator",
+              "qualifier"
+            ],
+            "additionalProperties": false
+          },
+          "support": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "conversationId": {
+                  "type": "string"
+                },
+                "messageId": {
+                  "type": "string"
+                },
+                "quote": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "conversationId",
+                "messageId",
+                "quote"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "conversationId": {
+            "type": "string"
+          },
+          "duplicateOf": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "supersedes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "recommendationState": {
+            "type": "string",
+            "enum": [
+              "not-applicable",
+              "accepted",
+              "rejected",
+              "unanswered"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "messageId",
+          "quote",
+          "kind",
+          "speaker",
+          "subject",
+          "decisionOwner",
+          "commitment",
+          "amount",
+          "support",
+          "conversationId",
+          "duplicateOf",
+          "supersedes",
+          "recommendationState"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "owner-of",
+              "depends-on"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "evidenceClaim": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "source",
+          "target",
+          "evidenceClaim"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "ambiguous-reference",
+              "missing-owner",
+              "ambiguous-date",
+              "ambiguous-time",
+              "missing-timezone",
+              "ambiguous-acceptance",
+              "possible-conflict"
+            ]
+          },
+          "field": {
+            "type": "string",
+            "enum": [
+              "speaker",
+              "subject",
+              "decisionOwner",
+              "commitment.owner",
+              "commitment.due",
+              "acceptance",
+              "conflict"
+            ]
+          },
+          "claimIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "field",
+          "claimIds",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "person",
+              "project",
+              "system",
+              "asset",
+              "topic"
+            ]
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "support": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "conversationId": {
+                  "type": "string"
+                },
+                "messageId": {
+                  "type": "string"
+                },
+                "quote": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "conversationId",
+                "messageId",
+                "quote"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "type",
+          "aliases",
+          "support"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "claims",
+    "relationships",
+    "flags",
+    "entities"
+  ],
+  "additionalProperties": false
+}

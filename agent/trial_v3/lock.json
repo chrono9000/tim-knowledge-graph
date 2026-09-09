@@ -1,0 +1,15 @@
+{
+  "lockedAt": "2026-09-08T22:14:55.655053+00:00",
+  "files": {
+    "agent\\trial_v3\\synthetic-export.json": "d4a9412565a9df6b4af9a7561d1c3f62fe49812cd41badba5ed724e4c8f2a667",
+    "agent\\trial_v3\\expected.json": "ec084dc41969d83a251ea188b6ac55450c5bb6b6781d586bfc3b00559663645e",
+    "agent\\trial_v3\\schema.json": "0dc6cf40b2cd4fcaec6eb4b085bb8254fbb31f41892e14297b3c3104f12a5b51",
+    "agent\\trial_v3\\prompt.txt": "371f09b43ddca27912a504e916725730e137700780205d3f9261ea573a61958d",
+    "agent\\trial_v3\\contract.py": "22179f0aaa55560a9368bdc77e56e7f4ea999fc04f3d73d93fbc74c7ecfe3dae",
+    "agent\\trial_v3\\criteria.json": "3cd5866e43830340928c36bbf4b26d8325039835787c600fcbfb0f3d25ecedad"
+  },
+  "conversations": 6,
+  "messages": 222,
+  "expectedClaims": 30,
+  "expectedEntities": 10
+}

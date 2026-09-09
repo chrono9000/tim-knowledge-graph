@@ -90,6 +90,7 @@ def stage_conversation(config, path, conversation, provider):
     result = import_export(path, config, 'unknown', prepared=(normalized, document, conversation['timestamp']),
                            identity_hash=identity, dry_run=True)
     batch = result.details['batch']
+    batch['supportingContext'] = document.supporting_context
     if conversation.get('containerHash'):
         batch['containerContentHash'] = conversation['containerHash']
     batch['conversation'] = {'id': conversation['id'], 'project': conversation['project'], 'revision': identity,
@@ -103,6 +104,15 @@ def stage_conversation(config, path, conversation, provider):
     for p in batch['proposals']:
         record = p['record']
         p['extractionEvidence'] = evidence.get(canonical_text(record.get('label', '')), [])
+        from .materiality import classify_materiality, group_keys
+        p['materiality'] = next((e['materiality'] for e in p['extractionEvidence'] if 'materiality' in e),
+                               {'standalone':True,'criterion':'durable-fact','durability':'durable','priority':'medium','reason':'Structural entity or provenance candidate.'})
+        if p['recordType']=='source':p['materiality']['priority']='low'
+        p['groupKeys'] = group_keys(record.get('description',''),next((e.get('owner') for e in p['extractionEvidence'] if e.get('owner')),None),record.get('label'))
+        # Retain context locally at source/batch level; attach shared-message context
+        # to source-linked proposals without manufacturing another graph node.
+        ids={e['message_id'] for e in p['extractionEvidence']}
+        p['supportingContext']=[c for c in document.supporting_context if c['message_id'] in ids]
         p['provenance'].update({'conversationId': conversation['id'], 'conversationRevision': identity,
                                 'contentHash': batch['source']['contentHash'], 'retrievedAt': batch['importedAt']})
         if p['extractionEvidence']:

@@ -1,0 +1,710 @@
+{
+  "entities": [
+    {
+      "id": "mina",
+      "label": "Mina Patel",
+      "type": "person",
+      "aliases": [],
+      "support": [
+        {
+          "conversationId": "curation-1",
+          "messageId": "curation-1-m1",
+          "quote": "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+        }
+      ]
+    },
+    {
+      "id": "tessa",
+      "label": "Tessa Moss",
+      "type": "person",
+      "aliases": [
+        "Tess"
+      ],
+      "support": [
+        {
+          "conversationId": "curation-1",
+          "messageId": "curation-1-m2",
+          "quote": "Tessa Moss, often called Tess, is the survey coordinator."
+        }
+      ]
+    },
+    {
+      "id": "alder",
+      "label": "Project Alderway",
+      "type": "project",
+      "aliases": [
+        "Alderway"
+      ],
+      "support": [
+        {
+          "conversationId": "curation-1",
+          "messageId": "curation-1-m1",
+          "quote": "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+        }
+      ]
+    },
+    {
+      "id": "gauge",
+      "label": "Gauge Cedar",
+      "type": "asset",
+      "aliases": [],
+      "support": [
+        {
+          "conversationId": "curation-2",
+          "messageId": "curation-2-m2",
+          "quote": "Gauge Cedar samples once every 200 milliseconds."
+        }
+      ]
+    },
+    {
+      "id": "willow",
+      "label": "Gauge Willow",
+      "type": "asset",
+      "aliases": [],
+      "support": [
+        {
+          "conversationId": "curation-11",
+          "messageId": "curation-11-m2",
+          "quote": "Gauge Willow samples once per second; it is not Gauge Cedar."
+        }
+      ]
+    },
+    {
+      "id": "dorian",
+      "label": "Dorian Hale",
+      "type": "person",
+      "aliases": [],
+      "support": [
+        {
+          "conversationId": "curation-12",
+          "messageId": "curation-12-m2",
+          "quote": "Dorian Hale is our new coordinator."
+        }
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "conversationId": "curation-1",
+      "messageId": "curation-1-m3",
+      "quote": "Tessa Moss is responsible for Project Alderway.",
+      "id": "c1",
+      "kind": "statement",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-1",
+          "messageId": "curation-1-m3",
+          "quote": "Tessa Moss is responsible for Project Alderway."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "ownership",
+        "durability": "durable",
+        "priority": "high",
+        "reason": "Establishes the accountable owner of the mapping project."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-1",
+      "messageId": "curation-1-m4",
+      "quote": "Tess is waiting for the field sketch at reception.",
+      "id": "c2",
+      "kind": "statement",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-1",
+          "messageId": "curation-1-m4",
+          "quote": "Tess is waiting for the field sketch at reception."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "evidence",
+        "criterion": "context",
+        "durability": "temporary",
+        "priority": "low",
+        "reason": "Useful source context without an established operational consequence."
+      },
+      "supportingFor": [
+        "c3"
+      ]
+    },
+    {
+      "conversationId": "curation-1",
+      "messageId": "curation-1-m5",
+      "quote": "I will send the field sketch for Alderway tomorrow at 10:00.",
+      "id": "c3",
+      "kind": "commitment",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": {
+        "owner": "mina",
+        "due": {
+          "date": "2027-06-04",
+          "time": "10:00",
+          "timezone": "UTC",
+          "ambiguity": "none"
+        }
+      },
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-1",
+          "messageId": "curation-1-m1",
+          "quote": "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+        },
+        {
+          "conversationId": "curation-1",
+          "messageId": "curation-1-m4",
+          "quote": "Tess is waiting for the field sketch at reception."
+        },
+        {
+          "conversationId": "curation-1",
+          "messageId": "curation-1-m5",
+          "quote": "I will send the field sketch for Alderway tomorrow at 10:00."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "commitment",
+        "durability": "temporary",
+        "priority": "high",
+        "reason": "Creates a named delivery commitment with a specific next-day deadline."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-2",
+      "messageId": "curation-2-m2",
+      "quote": "Gauge Cedar samples once every 200 milliseconds.",
+      "id": "c4",
+      "kind": "statement",
+      "speaker": "mina",
+      "subject": "gauge",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-2",
+          "messageId": "curation-2-m2",
+          "quote": "Gauge Cedar samples once every 200 milliseconds."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "durable-fact",
+        "durability": "durable",
+        "priority": "medium",
+        "reason": "Records a supported lasting property."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-2",
+      "messageId": "curation-2-m3",
+      "quote": "The Gauge Cedar parcel just arrived on the side table.",
+      "id": "c5",
+      "kind": "statement",
+      "speaker": "mina",
+      "subject": "gauge",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-2",
+          "messageId": "curation-2-m3",
+          "quote": "The Gauge Cedar parcel just arrived on the side table."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "evidence",
+        "criterion": "context",
+        "durability": "temporary",
+        "priority": "low",
+        "reason": "Useful source context without an established operational consequence."
+      },
+      "supportingFor": [
+        "c4"
+      ]
+    },
+    {
+      "conversationId": "curation-2",
+      "messageId": "curation-2-m4",
+      "quote": "For Alderway, I prefer location notes in plain text.",
+      "id": "c6",
+      "kind": "preference",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-2",
+          "messageId": "curation-2-m4",
+          "quote": "For Alderway, I prefer location notes in plain text."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "preference",
+        "durability": "durable",
+        "priority": "medium",
+        "reason": "Establishes a reusable project documentation preference."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-3",
+      "messageId": "curation-3-m2",
+      "quote": "Waiting for the missing boundary survey blocks the Alderway release scheduled for tomorrow.",
+      "id": "c7",
+      "kind": "risk",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-3",
+          "messageId": "curation-3-m2",
+          "quote": "Waiting for the missing boundary survey blocks the Alderway release scheduled for tomorrow."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "risk",
+        "durability": "temporary",
+        "priority": "high",
+        "reason": "The waiting state blocks a scheduled release and materially threatens the deadline."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-3",
+      "messageId": "curation-3-m3",
+      "quote": "I authorize postponing the Alderway release until the boundary survey is complete.",
+      "id": "c8",
+      "kind": "decision",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": "mina",
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-3",
+          "messageId": "curation-3-m1",
+          "quote": "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+        },
+        {
+          "conversationId": "curation-3",
+          "messageId": "curation-3-m2",
+          "quote": "Waiting for the missing boundary survey blocks the Alderway release scheduled for tomorrow."
+        },
+        {
+          "conversationId": "curation-3",
+          "messageId": "curation-3-m3",
+          "quote": "I authorize postponing the Alderway release until the boundary survey is complete."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "decision",
+        "durability": "durable",
+        "priority": "high",
+        "reason": "Explicitly changes the release decision."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-4",
+      "messageId": "curation-4-m2",
+      "quote": "I recommend adding decorative borders to the Alderway draft.",
+      "id": "c9",
+      "kind": "recommendation",
+      "speaker": null,
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-4",
+          "messageId": "curation-4-m2",
+          "quote": "I recommend adding decorative borders to the Alderway draft."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "unanswered",
+      "materiality": {
+        "route": "evidence",
+        "criterion": "context",
+        "durability": "temporary",
+        "priority": "low",
+        "reason": "Useful source context without an established operational consequence."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-5",
+      "messageId": "curation-5-m2",
+      "quote": "Gauge Cedar must operate below or at 45 degrees Celsius.",
+      "id": "c10",
+      "kind": "constraint",
+      "speaker": "mina",
+      "subject": "gauge",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": {
+        "value": 45,
+        "unit": "degrees Celsius",
+        "operator": "<=",
+        "qualifier": null
+      },
+      "support": [
+        {
+          "conversationId": "curation-5",
+          "messageId": "curation-5-m2",
+          "quote": "Gauge Cedar must operate below or at 45 degrees Celsius."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "constraint",
+        "durability": "durable",
+        "priority": "medium",
+        "reason": "Defines a durable operating temperature constraint."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-6",
+      "messageId": "curation-6-m2",
+      "quote": "I accept responsibility for proofreading the Alderway glossary.",
+      "id": "c11",
+      "kind": "commitment",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": {
+        "owner": "mina",
+        "due": {
+          "date": null,
+          "time": null,
+          "timezone": "UTC",
+          "ambiguity": "none"
+        }
+      },
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-6",
+          "messageId": "curation-6-m1",
+          "quote": "I'm Mina Patel. Use UTC for dates. Project Alderway is our mapping effort; the short name is Alderway."
+        },
+        {
+          "conversationId": "curation-6",
+          "messageId": "curation-6-m2",
+          "quote": "I accept responsibility for proofreading the Alderway glossary."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "commitment",
+        "durability": "temporary",
+        "priority": "medium",
+        "reason": "Records accepted responsibility without an immediate deadline."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-8",
+      "messageId": "curation-8-m2",
+      "quote": "Tessa Moss is responsible for Project Alderway.",
+      "id": "c12",
+      "kind": "statement",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-8",
+          "messageId": "curation-8-m2",
+          "quote": "Tessa Moss is responsible for Project Alderway."
+        }
+      ],
+      "duplicateOf": "c1",
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "ownership",
+        "durability": "durable",
+        "priority": "high",
+        "reason": "Repeats previously established project ownership; retain the second provenance span."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-8",
+      "messageId": "curation-8-m3",
+      "quote": "Tessa Moss is responsible for Project Alderway.",
+      "id": "c13",
+      "kind": "statement",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-8",
+          "messageId": "curation-8-m3",
+          "quote": "Tessa Moss is responsible for Project Alderway."
+        }
+      ],
+      "duplicateOf": "c1",
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "ownership",
+        "durability": "durable",
+        "priority": "high",
+        "reason": "Same-conversation repeat adds evidence, not another approval item."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-9",
+      "messageId": "curation-9-m2",
+      "quote": "For Alderway, I no longer prefer plain text; I now prefer structured tables for location notes.",
+      "id": "c14",
+      "kind": "preference",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-2",
+          "messageId": "curation-2-m4",
+          "quote": "For Alderway, I prefer location notes in plain text."
+        },
+        {
+          "conversationId": "curation-9",
+          "messageId": "curation-9-m2",
+          "quote": "For Alderway, I no longer prefer plain text; I now prefer structured tables for location notes."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": "c6",
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "change",
+        "durability": "durable",
+        "priority": "high",
+        "reason": "Explicitly replaces the earlier project preference and retains its history."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-10",
+      "messageId": "curation-10-m2",
+      "quote": "Which approval is missing before Alderway can resume fieldwork?",
+      "id": "c15",
+      "kind": "unresolved-question",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-10",
+          "messageId": "curation-10-m2",
+          "quote": "Which approval is missing before Alderway can resume fieldwork?"
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "question",
+        "durability": "temporary",
+        "priority": "high",
+        "reason": "An unanswered authorization question blocks the next project action."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-11",
+      "messageId": "curation-11-m2",
+      "quote": "Gauge Willow samples once per second; it is not Gauge Cedar.",
+      "id": "c16",
+      "kind": "statement",
+      "speaker": "mina",
+      "subject": "willow",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-11",
+          "messageId": "curation-11-m2",
+          "quote": "Gauge Willow samples once per second; it is not Gauge Cedar."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "durable-fact",
+        "durability": "durable",
+        "priority": "medium",
+        "reason": "Records a supported lasting property."
+      },
+      "supportingFor": []
+    },
+    {
+      "conversationId": "curation-11",
+      "messageId": "curation-11-m3",
+      "quote": "I acknowledged the Gauge Willow delivery notification.",
+      "id": "c17",
+      "kind": "statement",
+      "speaker": "mina",
+      "subject": "willow",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-11",
+          "messageId": "curation-11-m3",
+          "quote": "I acknowledged the Gauge Willow delivery notification."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": null,
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "evidence",
+        "criterion": "context",
+        "durability": "temporary",
+        "priority": "low",
+        "reason": "Useful source context without an established operational consequence."
+      },
+      "supportingFor": [
+        "c16"
+      ]
+    },
+    {
+      "conversationId": "curation-12",
+      "messageId": "curation-12-m3",
+      "quote": "Correction: Dorian Hale is responsible for Project Alderway now, replacing Tessa Moss.",
+      "id": "c18",
+      "kind": "statement",
+      "speaker": "mina",
+      "subject": "alder",
+      "decisionOwner": null,
+      "commitment": null,
+      "amount": null,
+      "support": [
+        {
+          "conversationId": "curation-1",
+          "messageId": "curation-1-m3",
+          "quote": "Tessa Moss is responsible for Project Alderway."
+        },
+        {
+          "conversationId": "curation-12",
+          "messageId": "curation-12-m2",
+          "quote": "Dorian Hale is our new coordinator."
+        },
+        {
+          "conversationId": "curation-12",
+          "messageId": "curation-12-m3",
+          "quote": "Correction: Dorian Hale is responsible for Project Alderway now, replacing Tessa Moss."
+        }
+      ],
+      "duplicateOf": null,
+      "supersedes": "c1",
+      "recommendationState": "not-applicable",
+      "materiality": {
+        "route": "proposal",
+        "criterion": "change",
+        "durability": "durable",
+        "priority": "high",
+        "reason": "Explicitly changes accountable project ownership and supersedes the earlier owner."
+      },
+      "supportingFor": []
+    }
+  ],
+  "relationships": [
+    {
+      "type": "owner-of",
+      "source": "tessa",
+      "target": "alder",
+      "evidenceClaim": "c1"
+    },
+    {
+      "type": "owner-of",
+      "source": "dorian",
+      "target": "alder",
+      "evidenceClaim": "c18"
+    }
+  ],
+  "flags": []
+}

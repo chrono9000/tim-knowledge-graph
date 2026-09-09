@@ -654,12 +654,19 @@ def build_parser() -> argparse.ArgumentParser:
     previewer.add_argument("--status", action="append", choices=sorted(REVIEW_STATUSES))
     reviewer_list = subparsers.add_parser("review", help="Show a concise numbered proposal list.")
     reviewer_list.add_argument("--status", action="append", choices=sorted(REVIEW_STATUSES))
+    planner=subparsers.add_parser('review-plan',help='Save recommended or expanded grouped review without approving.')
+    planner.add_argument('--group-by',choices=['project','person','entity','topic'],default='project')
+    planner.add_argument('--view',choices=['recommended','expanded'],default='recommended')
+    planner.add_argument('--output',type=Path,required=True)
     for name in ("approve-private", "approve-public", "reject"):
         reviewer = subparsers.add_parser(name)
         reviewer.add_argument("proposal_ids", nargs="*")
         reviewer.add_argument("--number", type=int, action="append", default=[], help="Select a proposal by its number from the review command; repeat as needed.")
         reviewer.add_argument("--batch")
         reviewer.add_argument("--all", action="store_true")
+        if name=='approve-private':
+            reviewer.add_argument('--review-plan',type=Path)
+            reviewer.add_argument('--group')
         if name == "approve-public":
             reviewer.add_argument("--allow-sensitive", action="store_true", help="Explicitly allow reviewed sensitive content to receive public approval.")
     subparsers.add_parser("publish", help="Publish only approved-public proposals.")
@@ -711,8 +718,16 @@ def _main(argv: list[str] | None = None) -> int:
             result = preview(config, arguments.status)
         elif arguments.command == "review":
             result = review_list(config, arguments.status)
+        elif arguments.command == 'review-plan':
+            from .review_groups import save_plan
+            result=save_plan(config,arguments.output,arguments.group_by,arguments.view)
         elif arguments.command == "approve-private":
             ids = [*arguments.proposal_ids, *proposal_ids_for_numbers(config, arguments.number)]
+            if arguments.review_plan or arguments.group:
+                if not arguments.review_plan or not arguments.group or ids or arguments.batch or arguments.all:
+                    raise ValueError('Select exactly one saved review-plan group, without other selectors')
+                from .review_groups import selected_ids
+                ids=selected_ids(config,arguments.review_plan,arguments.group)
             result = approve(config, "private", ids, arguments.batch, arguments.all).as_dict()
         elif arguments.command == "approve-public":
             ids = [*arguments.proposal_ids, *proposal_ids_for_numbers(config, arguments.number)]

@@ -1,0 +1,641 @@
+[
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "The Polar vials are in the insulated cabinet.",
+        "kind": "statement",
+        "speaker": "p-ines",
+        "subject": "a-vials",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "The Polar vials are in the insulated cabinet."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "messageId": "m2",
+        "quote": "I will photograph the Polar vials at 06:15 tomorrow.",
+        "kind": "commitment",
+        "speaker": "p-ines",
+        "subject": "a-vials",
+        "decisionOwner": null,
+        "commitment": {
+          "owner": "p-ines",
+          "due": {
+            "date": "2027-01-01",
+            "time": "06:15",
+            "timezone": "Pacific/Honolulu",
+            "ambiguity": "none"
+          }
+        },
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m2",
+            "quote": "I will photograph the Polar vials at 06:15 tomorrow."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": []
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "I recommend removing the background music from the Harbor radio episode.",
+        "kind": "recommendation",
+        "speaker": null,
+        "subject": "pr-radio",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "I recommend removing the background music from the Harbor radio episode."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "messageId": "m2",
+        "quote": "As the editor, I authorize the music-free cut of the Harbor radio episode.",
+        "kind": "decision",
+        "speaker": "p-ada",
+        "subject": "pr-radio",
+        "decisionOwner": "p-ada",
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "I recommend removing the background music from the Harbor radio episode."
+          },
+          {
+            "messageId": "m2",
+            "quote": "As the editor, I authorize the music-free cut of the Harbor radio episode."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": []
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "The Upstairs studio is our selection for the visiting sculptors.",
+        "kind": "proposed-choice",
+        "speaker": null,
+        "subject": "a-room",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "The Upstairs studio is our selection for the visiting sculptors."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": [
+      {
+        "code": "missing-owner",
+        "field": "decisionOwner",
+        "claimIds": [
+          "c1"
+        ],
+        "reason": "The collective selection has no identified person who adopted it."
+      }
+    ]
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "Either Morgan or Ellis has undertaken to obtain the Crane permit; I don't know which one agreed.",
+        "kind": "commitment",
+        "speaker": "p-harper",
+        "subject": "pr-permit",
+        "decisionOwner": null,
+        "commitment": {
+          "owner": null,
+          "due": {
+            "date": null,
+            "time": null,
+            "timezone": "Europe/London",
+            "ambiguity": "none"
+          }
+        },
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "Either Morgan or Ellis has undertaken to obtain the Crane permit; I don't know which one agreed."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": [
+      {
+        "code": "ambiguous-reference",
+        "field": "commitment.owner",
+        "claimIds": [
+          "c1"
+        ],
+        "reason": "Morgan and Ellis are alternative possible owners; the speaker explicitly cannot identify which accepted."
+      }
+    ]
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "Suri is responsible for the Fossil index.",
+        "kind": "statement",
+        "speaker": "p-niko",
+        "subject": "s-index",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "Suri is responsible for the Fossil index."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "messageId": "m2",
+        "quote": "The Fossil index depends on the Plate image store.",
+        "kind": "statement",
+        "speaker": "p-niko",
+        "subject": "s-index",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m2",
+            "quote": "The Fossil index depends on the Plate image store."
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "type": "owner-of",
+        "source": "p-suri",
+        "target": "s-index",
+        "evidenceClaim": "c1"
+      },
+      {
+        "type": "depends-on",
+        "source": "s-index",
+        "target": "s-images",
+        "evidenceClaim": "c2"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "For Night-watch alerts, I prefer vibration only.",
+        "kind": "preference",
+        "speaker": "p-bo",
+        "subject": "t-night",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "For Night-watch alerts, I prefer vibration only."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "messageId": "m2",
+        "quote": "For Night-watch alerts, I prefer audible alarms only.",
+        "kind": "preference",
+        "speaker": "p-bo",
+        "subject": "t-night",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m2",
+            "quote": "For Night-watch alerts, I prefer audible alarms only."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "messageId": "m3",
+        "quote": "For Day-watch alerts, I prefer vibration only.",
+        "kind": "preference",
+        "speaker": "p-bo",
+        "subject": "t-day",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m3",
+            "quote": "For Day-watch alerts, I prefer vibration only."
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "messageId": "m4",
+        "quote": "For Night-watch alerts, I prefer vibration only.",
+        "kind": "preference",
+        "speaker": "p-luz",
+        "subject": "t-night",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m4",
+            "quote": "For Night-watch alerts, I prefer vibration only."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": [
+      {
+        "code": "possible-conflict",
+        "field": "conflict",
+        "claimIds": [
+          "c1",
+          "c2"
+        ],
+        "reason": "Bo gives mutually exclusive alert-mode preferences for the same Night-watch alerts scope."
+      }
+    ]
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "Each Survey ration must contain at least 18 grams of protein.",
+        "kind": "constraint",
+        "speaker": "p-faye",
+        "subject": "a-ration",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": {
+          "value": 18,
+          "unit": "grams",
+          "operator": ">=",
+          "qualifier": "of protein"
+        },
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "Each Survey ration must contain at least 18 grams of protein."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "messageId": "m2",
+        "quote": "Each Survey ration must weigh no more than 620 grams, including its wrapper.",
+        "kind": "constraint",
+        "speaker": "p-faye",
+        "subject": "a-ration",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": {
+          "value": 620,
+          "unit": "grams",
+          "operator": "<=",
+          "qualifier": "including its wrapper"
+        },
+        "support": [
+          {
+            "messageId": "m2",
+            "quote": "Each Survey ration must weigh no more than 620 grams, including its wrapper."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": []
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "I will conduct the Freight lift inspection on 04/05/2027.",
+        "kind": "commitment",
+        "speaker": "p-hugo",
+        "subject": "pr-lift",
+        "decisionOwner": null,
+        "commitment": {
+          "owner": "p-hugo",
+          "due": {
+            "date": null,
+            "time": null,
+            "timezone": "Europe/London",
+            "ambiguity": "date"
+          }
+        },
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "I will conduct the Freight lift inspection on 04/05/2027."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": [
+      {
+        "code": "ambiguous-date",
+        "field": "commitment.due",
+        "claimIds": [
+          "c1"
+        ],
+        "reason": "The numeric date 04/05/2027 can mean April 5 or May 4; the source gives no date-format convention."
+      }
+    ]
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "I will perform the Lantern calibration on 20 February 2027 at seven.",
+        "kind": "commitment",
+        "speaker": "p-rosa",
+        "subject": "pr-lantern",
+        "decisionOwner": null,
+        "commitment": {
+          "owner": "p-rosa",
+          "due": {
+            "date": "2027-02-20",
+            "time": null,
+            "timezone": "Europe/London",
+            "ambiguity": "time"
+          }
+        },
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "I will perform the Lantern calibration on 20 February 2027 at seven."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": [
+      {
+        "code": "ambiguous-time",
+        "field": "commitment.due",
+        "claimIds": [
+          "c1"
+        ],
+        "reason": "Seven does not specify morning or evening, so the date is known but the hour cannot be normalized."
+      }
+    ]
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "Consider solar power for the Hilltop relay.",
+        "kind": "recommendation",
+        "speaker": null,
+        "subject": "pr-relay",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "Consider solar power for the Hilltop relay."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "messageId": "m2",
+        "quote": "If the snow-load assessment allows it, solar power could be our choice for the Hilltop relay.",
+        "kind": "proposed-choice",
+        "speaker": "p-evan",
+        "subject": "pr-relay",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m2",
+            "quote": "If the snow-load assessment allows it, solar power could be our choice for the Hilltop relay."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "messageId": "m3",
+        "quote": "I can help assess the Hilltop relay if you need another pair of hands.",
+        "kind": "recommendation",
+        "speaker": "p-evan",
+        "subject": "pr-relay",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m3",
+            "quote": "I can help assess the Hilltop relay if you need another pair of hands."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": []
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m3",
+        "quote": "The Pocket meter uses two AA cells.",
+        "kind": "statement",
+        "speaker": "p-tala",
+        "subject": "a-meter",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m3",
+            "quote": "The Pocket meter uses two AA cells."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": []
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "Yara decided to release the Community atlas under a permissive license.",
+        "kind": "decision",
+        "speaker": "p-vik",
+        "subject": "pr-atlas",
+        "decisionOwner": "p-yara",
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "Yara decided to release the Community atlas under a permissive license."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "messageId": "m2",
+        "quote": "I accept responsibility for proofreading the Community atlas.",
+        "kind": "commitment",
+        "speaker": "p-vik",
+        "subject": "pr-atlas",
+        "decisionOwner": null,
+        "commitment": {
+          "owner": "p-vik",
+          "due": {
+            "date": null,
+            "time": null,
+            "timezone": "Europe/London",
+            "ambiguity": "none"
+          }
+        },
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m2",
+            "quote": "I accept responsibility for proofreading the Community atlas."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": []
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "I will supervise the Tunnel scan tomorrow before noon.",
+        "kind": "commitment",
+        "speaker": "p-jun",
+        "subject": "pr-scan",
+        "decisionOwner": null,
+        "commitment": {
+          "owner": "p-jun",
+          "due": {
+            "date": null,
+            "time": null,
+            "timezone": null,
+            "ambiguity": "timezone"
+          }
+        },
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "I will supervise the Tunnel scan tomorrow before noon."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": [
+      {
+        "code": "missing-timezone",
+        "field": "commitment.due",
+        "claimIds": [
+          "c1"
+        ],
+        "reason": "The relative deadline requires the source local timezone, which is not supplied."
+      }
+    ]
+  },
+  {
+    "claims": [
+      {
+        "id": "c1",
+        "messageId": "m1",
+        "quote": "For Trail map labels, I prefer large lettering.",
+        "kind": "preference",
+        "speaker": "p-cleo",
+        "subject": "t-map",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m1",
+            "quote": "For Trail map labels, I prefer large lettering."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "messageId": "m2",
+        "quote": "For Trail map labels, I prefer high contrast.",
+        "kind": "preference",
+        "speaker": "p-cleo",
+        "subject": "t-map",
+        "decisionOwner": null,
+        "commitment": null,
+        "amount": null,
+        "support": [
+          {
+            "messageId": "m2",
+            "quote": "For Trail map labels, I prefer high contrast."
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "flags": []
+  }
+]

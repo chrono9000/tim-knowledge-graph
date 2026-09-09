@@ -133,6 +133,7 @@ class ExtractedDocument:
     edges: dict[tuple[str, str, str, bool], CandidateEdge] = field(default_factory=dict)
     metadata: dict[str, str] = field(default_factory=dict)
     is_conversation: bool = False
+    supporting_context: list[dict] = field(default_factory=list)
 
     def add_node(self, candidate: CandidateNode) -> None:
         candidate.label = clean_label(candidate.label)

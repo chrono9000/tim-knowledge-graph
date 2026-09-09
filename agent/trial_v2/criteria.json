@@ -1,0 +1,22 @@
+{
+  "matching": "one-to-one by primary message ID and overlapping exact source span; no kind-based alignment",
+  "claims": "presence of material gold claim; duplicate/unmatched output is FP",
+  "classifications": "one (claim,kind) tuple per claim",
+  "speakersSubjects": "separate (claim,entity-ID) tuples; null is absence, not a positive prediction",
+  "decisionOwnership": "(claim,person-ID) tuples; null excluded",
+  "commitmentsDeadlines": "commitment (claim,owner), and each nonnull due date/time/timezone plus non-none ambiguity tuple",
+  "relationships": "(type,source-ID,target-ID); evidenceClaim validated separately",
+  "conflicts": "one flag per expected claim pair; reason checked independently",
+  "uncertainty": "nonconflict (code,field,claim-set), reason must identify material source ambiguity; no text-exact reason match",
+  "unnecessaryReview": "unique proposals with extra nonmaterial flags, plus unsupported/duplicate proposals; routine mandatory approval of useful claims is not unnecessary review",
+  "gate": {
+    "allSchemaAndValidatorPass": true,
+    "minPrecisionEachDimension": 0.95,
+    "minRecallEachDimension": 0.95,
+    "unsupportedAdoptedDecisions": 0,
+    "definiteConflictEdges": 0,
+    "unnecessaryReviewProposals": 0
+  },
+  "noPosthocRepair": true,
+  "smallSampleLimitation": "Passing permits only considering a separately authorized synthetic API trial, not real chats."
+}

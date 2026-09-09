@@ -1,0 +1,33 @@
+{
+  "gate": {
+    "minimumPrecision": 0.95,
+    "minimumRecall": 0.95,
+    "allSchemaAndValidatorPass": true,
+    "unsupportedAdoptedDecisions": 0,
+    "confirmedConflictEdges": 0,
+    "unnecessaryReviewProposals": 0
+  },
+  "dimensions": [
+    "claims",
+    "classifications",
+    "entities",
+    "speakers",
+    "subjects",
+    "decisionOwnership",
+    "commitments",
+    "deadlines",
+    "relationships",
+    "conflicts",
+    "uncertaintyFlags",
+    "duplicates",
+    "changes",
+    "recommendationStates"
+  ],
+  "alignment": "Claims: same conversation/message and mutually overlapping exact source spans, one-to-one. Entities: normalized full label or explicit expected alias plus matching type. Normalize punctuation/case and optional leading the. Unknown and ambiguous identities remain unmatched; do not collapse different entities.",
+  "duplicateHandling": "Preserve every source occurrence. duplicateOf and supersedes compare aligned claim pairs; duplicates are grouped for review but no graph merge occurs.",
+  "reviewBurden": "Extra unmatched claims and unique claims targeted by extra nonmaterial flags count as unnecessary review. Duplicate handling errors separately count avoidable repeat reviews. Entity candidates and aliases require review separately from fact claims.",
+  "estimate": "Scale observed nonduplicate claim groups per conversation to 100, plus entity candidate cards separately. Show per-conversation range; scenario estimate, not population prediction.",
+  "noAfterSeeingOutputChanges": true,
+  "nullReferences": "absence not positive entity prediction",
+  "flagReasons": "Compare type/field/claim-set; independently review reason specificity, not exact text."
+}

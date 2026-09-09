@@ -1,0 +1,5 @@
+# Frozen synthetic evaluation inputs are hashed byte-for-byte across platforms.
+agent/trial/** -text
+agent/trial_v2/** -text
+agent/trial_v3/** -text
+agent/curation/** -text

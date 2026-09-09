@@ -47,6 +47,8 @@ def classify(text, role):
     lower = text.casefold()
     if text.endswith('?'):
         return 'question', 'unresolved-question'
+    if re.search(r"\bi (?:can|could|am happy to|would be happy to) (?:help|assist)\b", lower):
+        return 'statement', 'recommendation'  # An offer is not accepted responsibility.
     if role != 'user':
         return 'statement', 'recommendation' if re.search(r'\b(should|recommend|suggest|could|consider)\b', lower) else 'assumption'
     if re.search(r'\b(recommend|suggest|should|could|consider)\b', lower):
@@ -143,6 +145,12 @@ def extract_document(messages: tuple[Message, ...], provider: Extractor):
         explicit_owner = decision[1] if decision and epistemic == 'decision' else owner[1] if owner and message.role == 'user' else None
         if claim.owner and claim.owner != explicit_owner:
             raise ValueError('Ownership is not explicitly supported by this source')
+        from .materiality import classify_materiality
+        materiality = classify_materiality(claim.quote, category, epistemic)
+        if not materiality['standalone']:
+            document.supporting_context.append({'message_id':message.id,'quote':claim.quote,
+                'sourceTimestamp':message.timestamp,'role':message.role,'materiality':materiality})
+            continue
         statement = epistemic if epistemic != 'user-statement' else 'assumption'
         entity = {'person': 'person', 'project': 'project', 'system': 'system', 'decision': 'decision',
                   'policy': 'policy', 'question': 'open-issue'}.get(category, 'historical-note')
@@ -154,6 +162,7 @@ def extract_document(messages: tuple[Message, ...], provider: Extractor):
         document.add_node(CandidateNode(label, claim.quote, entity, statement, min(claim.confidence, 0.5), exact))
         key = canonical_text(clean_label(label))
         info = {**asdict(claim), 'epistemic': epistemic, 'category': category, 'role': message.role,
+                'materiality': materiality,
                 'sourceTimestamp': message.timestamp, 'provider': provider.name, 'providerVersion': provider.version,
                 'owner': explicit_owner, 'decisionOwner': explicit_owner if epistemic == 'decision' else None}
         evidence.setdefault(key, []).append(info)
