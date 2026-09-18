@@ -55,6 +55,15 @@ logs/*
 .env.*
 *.pem
 *.key
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.feos
+**/synthetic-keys.json
+**/local-config.json
+**/.dev.vars*
+**/.wrangler/
+**/node_modules/
 **/conversations-*.json
 **/conversations_*.json
 **/.knowledge-workflow.lock

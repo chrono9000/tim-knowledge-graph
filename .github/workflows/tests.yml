@@ -16,5 +16,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Run synthetic tests
+      - name: Install local encryption dependency
+        run: python -m pip install -r hosted/requirements-local.txt
+      - name: Run Python synthetic tests
         run: python -m unittest discover -s agent/tests -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned local test tools
+        working-directory: hosted
+        run: npm ci --ignore-scripts --no-fund
+      - name: Run hosted and local-runtime synthetic tests
+        working-directory: hosted
+        run: npm test

@@ -1,0 +1,26 @@
+{
+  // EXAMPLE ONLY. No account or database exists. No deploy script is supplied.
+  "name": "private-knowledge-intake",
+  "main": "src/worker.mjs",
+  "compatibility_date": "2026-07-30",
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": {"enabled": false},
+  "vars": {
+    "ENABLED": "false",
+    "BILLING_MODE": "free-only",
+    "ORIGIN": "https://replace-after-approval.invalid",
+    "ALLOWED_GITHUB_IDS": "[]",
+    "OAUTH_CLIENTS": "{}",
+    "GITHUB_CLIENT_ID": "NOT_CONFIGURED",
+    "RECIPIENT_KEY_ID": "NOT_CONFIGURED",
+    "ENVELOPE_KEY_ID": "NOT_CONFIGURED",
+    "RECEIPT_KEY_ID": "NOT_CONFIGURED"
+  },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "private-intake",
+    "database_id": "NOT_CREATED",
+    "migrations_dir": "migrations"
+  }]
+}

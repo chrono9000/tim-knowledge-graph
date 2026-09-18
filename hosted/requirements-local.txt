@@ -1,0 +1,3 @@
+# Required only for local envelope decryption and encrypted backups.
+cryptography==50.0.1
+

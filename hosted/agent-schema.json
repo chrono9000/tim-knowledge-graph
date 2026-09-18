@@ -1,0 +1,307 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "enum": [
+        1
+      ]
+    },
+    "conversationId": {
+      "type": "string"
+    },
+    "topic": {
+      "type": "string"
+    },
+    "sourceTimestamp": {
+      "type": "string"
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "person",
+              "entity",
+              "project",
+              "system",
+              "topic"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "type"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "fact",
+              "decision",
+              "change",
+              "preference",
+              "constraint",
+              "commitment",
+              "ownership",
+              "risk",
+              "unresolved-question",
+              "entity",
+              "project",
+              "system",
+              "relationship",
+              "recommendation",
+              "context"
+            ]
+          },
+          "subject": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "predicate": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "speaker": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "assistant",
+                  "unknown"
+                ]
+              },
+              "identity": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "role",
+              "identity"
+            ],
+            "additionalProperties": false
+          },
+          "confidence": {
+            "type": "number"
+          },
+          "authority": {
+            "type": "string",
+            "enum": [
+              "owner",
+              "primary",
+              "secondary",
+              "tertiary",
+              "unknown"
+            ]
+          },
+          "materiality": {
+            "type": "object",
+            "properties": {
+              "criterion": {
+                "type": "string",
+                "enum": [
+                  "decision",
+                  "ownership",
+                  "commitment",
+                  "preference",
+                  "constraint",
+                  "risk",
+                  "question",
+                  "relationship",
+                  "durable-fact",
+                  "change",
+                  "status",
+                  "context"
+                ]
+              },
+              "durability": {
+                "type": "string",
+                "enum": [
+                  "durable",
+                  "temporary"
+                ]
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "criterion",
+              "durability",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "owner": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "due": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "time": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "timezone": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "ambiguity": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "date",
+                  "time",
+                  "timezone"
+                ]
+              }
+            },
+            "required": [
+              "date",
+              "time",
+              "timezone",
+              "ambiguity"
+            ],
+            "additionalProperties": false
+          },
+          "supersedes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "relationship": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "owner-of",
+                  "depends-on"
+                ]
+              },
+              "source": {
+                "type": "string"
+              },
+              "target": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "source",
+              "target"
+            ],
+            "additionalProperties": false
+          },
+          "sourceRef": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "uncertainty": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "enum": [
+                    "speaker",
+                    "subject",
+                    "owner",
+                    "due",
+                    "acceptance"
+                  ]
+                },
+                "reason": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "field",
+                "reason"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "subject",
+          "scope",
+          "predicate",
+          "value",
+          "speaker",
+          "confidence",
+          "authority",
+          "materiality",
+          "owner",
+          "due",
+          "supersedes",
+          "relationship",
+          "sourceRef",
+          "evidence",
+          "uncertainty"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "version",
+    "conversationId",
+    "topic",
+    "sourceTimestamp",
+    "entities",
+    "claims"
+  ],
+  "additionalProperties": false
+}

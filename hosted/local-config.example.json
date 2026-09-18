@@ -1,0 +1,15 @@
+{
+  "enabled": false,
+  "origin": "https://not-deployed.invalid",
+  "privateRoot": "REPLACE_WITH_PRIVATE_DIRECTORY_OUTSIDE_GIT",
+  "publicBaseline": "REPLACE_WITH_LOCAL_READ_ONLY_BASELINE_COPY",
+  "independentBackupConfirmed": false,
+  "backupDirectory": "REPLACE_WITH_INDEPENDENT_ENCRYPTED_STORAGE",
+  "backupKeyFile": "REPLACE_WITH_PROTECTED_BASE64URL_KEY_FILE",
+  "syncKeyFile": "REPLACE_WITH_PROTECTED_BASE64URL_KEY_FILE",
+  "computerKeyId": "trusted-computer",
+  "envelopeKeyFiles": {"signing-v1": "REPLACE_WITH_PROTECTED_BASE64URL_KEY_FILE"},
+  "recipientPrivateKeyFile": "REPLACE_WITH_PROTECTED_PEM_FILE",
+  "recipientKeyId": "recipient-v1"
+}
+
